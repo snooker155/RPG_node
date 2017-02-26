@@ -6,11 +6,11 @@ Dark Purple : #A22FB0
 */
 
 html, body {
-  background-color: #78BD4C;
-  height: 100%;
-  width: 100%;
-  margin: 0;
   padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #24303E;
 }
 
 
@@ -31,7 +31,7 @@ html, body {
   font-size: 2em;
   line-height: 1.2;
   text-align: center;
-  background-color: #8AD453;
+  background-color: #1e74d8;
   white-space: nowrap;
   vertical-align: middle;
   cursor: pointer;
@@ -112,20 +112,20 @@ html, body {
      (create-game-template)
    ****************************** */
 
-.createGameWrapper, .joinGameWrapper, .gameOver {
+.createGameWrapper, .waitGameWrapper, .joinGameWrapper, .gameOver {
   font-family: 'Quicksand', sans-serif;
   margin: 0 auto;
   text-align: center;
 }
 
-.createGameWrapper .info{
+.waitGameWrapper .info{
   color: #ECFFE0;
   font-weight: 400;
   font-size: 2em;
   margin-top: 1.5em;
 }
 
-.createGameWrapper{
+.waitGameWrapper{
   color: #AE37B2;
   font-weight: 300;
 }
@@ -150,6 +150,47 @@ html, body {
 
 .info input#inputPlayerName {
   width: 90%;
+}
+
+#playersWaiting {
+  font-size: 2em;
+}
+
+
+/* ******************************
+           CREATE SCREEN
+      (wait-game-template)
+   ****************************** */
+
+.createGameWrapper {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  min-height: 320px;
+}
+
+.createGameWrapper .info {
+  font-size: 1.5em;
+  color: #ECFFE0;
+  height: 30%;
+  padding-top: 1%;
+}
+
+.createGameWrapper .btn {
+  width: 100%;
+  height: 50%;
+}
+
+#playerWaitingMessage {
+  font-size: .8em;
+}
+
+.waitGameWrapper #gameURL {
+  font-size: 4em;
+}
+
+.waitGameWrapper .gameId {
+  font-size: 8em;
 }
 
 
@@ -240,6 +281,7 @@ html, body {
 #hostWord {
   height: 100%;
   width: 100%;
+  color: white;
 }
 
 #hostWord h2, #btnPlayerRestart h3 {
@@ -314,3 +356,1371 @@ html, body {
   position: fixed;
   bottom: 0;
 }
+
+
+/* ******************************
+          BATTLE ARENA
+         (game-template)
+   ****************************** */
+
+p {
+  height: 11px;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000, 0px 1px 0 #000, 0px -1px 0 #000, -1px 0px 0 #000, 1px 0px 0 #000, 2px 2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, -2px -2px 0 #000, 0px 2px 0 #000, 0px -2px 0 #000, -2px 0px 0 #000, 2px 0px 0 #000, 1px 2px 0 #000, -1px 2px 0 #000, 1px -2px 0 #000, -1px -2px 0 #000, 2px 1px 0 #000, -2px 1px 0 #000, 2px -1px 0 #000, -2px -1px 0 #000;
+  font-weight: bold;
+}
+
+#screen {
+  width: 100%;
+  background-color: #24303E;
+  border: 5px solid #444;
+  float: left;
+  background-size: 100px;
+  height: 320px;
+}
+
+.log{
+  width: 100%;
+  border:5px solid #444;
+  overflow-y:none;
+  color: white;
+  /*background-color: #24303E;*/
+}
+
+#opponent_log{
+  height: 400px;
+}
+
+#infolog{
+  height: 320px;
+}
+
+#totalplayerhpbar {
+  /*background-color: #24303E;*/
+}
+
+#totalplayermanabar {
+  /*background-color: #24303E;*/
+}
+
+
+#playermanabar {
+  width: 100%;
+  height: 20px;
+  background: url("http://res.cloudinary.com/treborx555/image/upload/v1472309979/dblue168_zjpw0l.jpg");
+  background-size:150px;
+  /*border:5px solid #333;*/
+  top:0;
+  text-align: center;
+  color: white;
+}
+
+#playerhpbar {
+  width: 100%;
+  height: 20px;
+  background: url("http://res.cloudinary.com/treborx555/image/upload/v1472309979/red_ukpo3h.jpg");
+  background-size:150px;
+  /*border:5px solid #333;*/
+  text-align: center;
+  color: white;
+}
+
+.slot {
+  border: 1px solid #BF942C;
+  width: 60px;
+  height: 60px;
+  background-color: #8F5D38;
+  background: url("http://res.cloudinary.com/treborx555/image/upload/v1472064620/gui_xyicsn.png");
+  background-size: 60px;
+  display: inline-block;
+  float: left;
+  margin: 45px 15px;
+}
+
+.cooldown {
+  opacity: 0.3;
+}
+
+.small_slot {
+  border: 1px solid #BF942C;
+  width: 20px;
+  height: 20px;
+  background-color: #8F5D38;
+  background: url("http://res.cloudinary.com/treborx555/image/upload/v1472064620/gui_xyicsn.png");
+  background-size: 20px;
+}
+
+.big_slot {
+  border: 1px solid #BF942C;
+  width: 96px;
+  height: 96px;
+  background-color: #8F5D38;
+  background: url("http://res.cloudinary.com/treborx555/image/upload/v1472064620/gui_xyicsn.png");
+  background-size: 96px;
+  display: inline-block;
+  float: right;
+  margin: 25px 15px;
+}
+
+.spell_combo {
+  display: inline-block;
+  height: 120px;
+  float: left;
+}
+
+.spell_message{
+  display: block;
+  height: 80px;
+  text-align: center;
+  color: white;
+  float: left;
+}
+
+.spell_combo_info {
+  margin: 35px 35px;
+  display: inline-block;
+  float: left;
+  text-align: center;
+}
+
+.spell_cast{
+  width: 100%;
+  height: 210px;
+  border:5px solid #333;
+  overflow-y:scroll;
+  color: white;
+}
+
+.spells{
+  width: 100%;
+  height:100px;
+  background-color:#24303E;
+  border:5px solid #333;
+}
+
+.spellslot {
+  background-color: #24303E;
+  width: 60px;
+  height: 60px;
+  float:left;
+  margin: 15px 5px;
+}
+
+.barnum {
+  position: absolute;
+  margin-left: 5px;
+}
+
+.spells_group_2 {
+  display: inline-block;
+  margin-left: 30px;
+}
+
+.down {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.opponent{
+  width: 100%;
+  height: 400px;
+  border: 5px solid #444;
+  background-color: #24303E;
+}
+
+.opponent_img{
+  margin-left: 35%;
+  margin-top: 10px;
+}
+
+.opponent_name{
+  margin-top: 10px;
+  text-align: center;
+}
+
+.opponent_spells{
+  margin-left: 20%;
+}
+
+.opponent_spells > .slot{
+  margin: 25px 15px;
+}
+
+.opponent_buffs{
+  height: 40px;
+  margin-left: 23%;
+  margin-top: 5px;
+  padding-bottom: 20px;
+}
+
+.buffslot{
+  width: 20px;
+  height: 20px;
+  margin: 5px 20px;
+  display: inline;
+  float: left;
+}
+
+.burn {
+  background-color: orange;
+}
+
+.haste {
+  background-color: red;
+}
+
+.pain {
+  background-color: purple;
+}
+
+.heal {
+  background-color: green;
+}
+
+#totalopponenthpbar {
+  background-color: #24303E;
+}
+
+#totalopponentmanabar {
+  background-color: #24303E;
+}
+
+
+#opponentmanabar {
+  width: 100%;
+  height: 20px;
+  background: url("http://res.cloudinary.com/treborx555/image/upload/v1472309979/dblue168_zjpw0l.jpg");
+  background-size:150px;
+  /*border:5px solid #333;*/
+  top:0;
+  text-align: center;
+  color: white;
+}
+
+#opponenthpbar {
+  width: 100%;
+  height: 20px;
+  background: url("http://res.cloudinary.com/treborx555/image/upload/v1472309979/red_ukpo3h.jpg");
+  background-size:150px;
+  /*border:5px solid #333;*/
+  text-align: center;
+  color: white;
+}
+
+.player{
+  width: 100%;
+  height: 320px;
+  border: 5px solid #444;
+  background-color: #24303E;
+}
+
+.player_img{
+  margin-left: 35%;
+  margin-top: 10px;
+}
+
+.player_name{
+  margin-top: 10px;
+  text-align: center;
+}
+
+.opponent_battlecell{
+  display: inline;
+  float: left;
+  width: 33.3%;
+  height: 200px;
+}
+
+.opponent_battlefield{
+  display: block;
+  width: 100%;
+  height: 200px;
+  border-bottom: 5px solid #555;
+}
+
+.player_battlecell{
+  display: inline;
+  float: left;
+  width: 33.3%;
+  height: 194px;
+  text-align: center;
+}
+
+.border{
+  border-right: 3px solid #444;
+  border-left: 3px solid #444;
+}
+
+.player_battlefield{
+  display: block;
+  width: 100%;
+  height: 200px;
+}
+
+.player_buffs{
+  height: 10px;
+  padding-bottom: 20px;
+  margin-top: 10px;
+  margin-left: 10%;
+}
+
+.summon{
+  width: 170px;
+  height: 170px;
+  margin: 5% 20%;
+}
+
+.selected {
+  border: 5px solid green;
+}
+
+.summon_img{
+  display: inline;
+  float: left;
+}
+
+.summon_buffs{
+  margin-top: 20px;
+  display: inline;
+  float: left;
+}
+
+.summonbuffslot{
+  width: 15px;
+  height: 15px;
+  margin: 5px 10px;
+}
+
+.summonhpbar{
+  width: 100%;
+  height: 15px;
+  background: url("http://res.cloudinary.com/treborx555/image/upload/v1472309979/red_ukpo3h.jpg");
+  background-size:150px;
+  /*border:5px solid #333;*/
+  text-align: center;
+  color: white;
+}
+
+.battlefield{
+  width: 100%;
+  height: 400px;
+  border: 5px solid #444;
+  /*background-color: #24303E;*/
+}
+
+
+
+
+/*-------------------------*/
+/*-------------------------*/
+/*-------------------------*/
+
+
+.fire{
+  color:orange;
+}
+
+.blood{
+  color:red;
+}
+.ice{
+  color:blue;
+}
+.storm{
+  color:yellow;
+}
+.nature{
+  color:green;
+}
+.dodge{
+  color:gray;
+}
+
+.fire{
+  color:orange;
+}
+
+.shadow{
+  color:purple;
+}
+
+
+
+.BloodDMG{
+  color:red;
+}
+.IceDMG{
+  color:blue;
+}
+.StormDMG{
+  color:yellow;
+}
+.NatureDMG{
+  color:green;
+}
+.ShadowDMG{
+  color:purple;
+}
+.FireDMG{
+  color:orange;
+}
+.MagicPow{
+  color:pink;
+}
+.HealPow{
+  color:yellow;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+
+.mobsprites {
+  background-image: url("http://res.cloudinary.com/treborx555/image/upload/v1472288881/spritesheet_7_guocsq.png");
+  background-repeat: no-repeat;
+  display: block;
+}
+
+.boss10 {
+  width: 125px;
+  height: 150px;
+  background-position: 0 0;
+}
+
+.boss11 {
+  width: 125px;
+  height: 150px;
+  background-position: -125px 0;
+}
+
+.boss12 {
+  width: 125px;
+  height: 150px;
+  background-position: -250px 0;
+}
+
+.boss13 {
+  width: 125px;
+  height: 150px;
+  background-position: 0 -150px;
+}
+
+.boss1 {
+  width: 125px;
+  height: 150px;
+  background-position: -125px -150px;
+}
+
+.boss2 {
+  width: 125px;
+  height: 150px;
+  background-position: -250px -150px;
+}
+
+.boss3 {
+  width: 125px;
+  height: 150px;
+  background-position: 0 -300px;
+}
+
+.boss4 {
+  width: 125px;
+  height: 150px;
+  background-position: -125px -300px;
+}
+
+.boss5 {
+  width: 125px;
+  height: 150px;
+  background-position: -250px -300px;
+}
+
+.boss6 {
+  width: 125px;
+  height: 150px;
+  background-position: -375px 0;
+}
+
+.boss7 {
+  width: 125px;
+  height: 150px;
+  background-position: -375px -150px;
+}
+
+.boss8 {
+  width: 125px;
+  height: 150px;
+  background-position: -375px -300px;
+}
+
+.boss9 {
+  width: 125px;
+  height: 150px;
+  background-position: 0 -450px;
+}
+
+
+
+
+/* SPELL SPRITES NOW */
+.spellsprite {
+  background-image: url("http://res.cloudinary.com/treborx555/image/upload/v1472247353/spritesheet_ne1oxv.png");
+  background-repeat: no-repeat;
+  display: block;
+}
+
+.-basic {
+  width: 60px;
+  height: 60px;
+  background-position: 0 0;
+}
+
+.-blood-1 {
+  width: 60px;
+  height: 60px;
+  background-position: -60px 0;
+}
+
+.-blood-2 {
+  width: 60px;
+  height: 60px;
+  background-position: -120px 0;
+}
+
+.-blood-3 {
+  width: 60px;
+  height: 60px;
+  background-position: -180px 0;
+}
+
+.-blood-4 {
+  width: 60px;
+  height: 60px;
+  background-position: -240px 0;
+}
+
+.-blood-5 {
+  width: 60px;
+  height: 60px;
+  background-position: -300px 0;
+}
+
+.-blood-6 {
+  width: 60px;
+  height: 60px;
+  background-position: -360px 0;
+}
+
+.-defend-1 {
+  width: 60px;
+  height: 60px;
+  background-position: 0 -60px;
+}
+
+.-defend-2 {
+  width: 60px;
+  height: 60px;
+  background-position: -60px -60px;
+}
+
+.-defend-3 {
+  width: 60px;
+  height: 60px;
+  background-position: -120px -60px;
+}
+
+.-defend-4 {
+  width: 60px;
+  height: 60px;
+  background-position: -180px -60px;
+}
+
+.-defend-5 {
+  width: 60px;
+  height: 60px;
+  background-position: -240px -60px;
+}
+
+.-defend-6 {
+  width: 60px;
+  height: 60px;
+  background-position: -300px -60px;
+}
+
+.-fire-1 {
+  width: 60px;
+  height: 60px;
+  background-position: -360px -60px;
+}
+
+.-fire-2 {
+  width: 60px;
+  height: 60px;
+  background-position: 0 -120px;
+}
+
+.-fire-3 {
+  width: 60px;
+  height: 60px;
+  background-position: -60px -120px;
+}
+
+.-fire-4 {
+  width: 60px;
+  height: 60px;
+  background-position: -120px -120px;
+}
+
+.-fire-5 {
+  width: 60px;
+  height: 60px;
+  background-position: -180px -120px;
+}
+
+.-fire-6 {
+  width: 60px;
+  height: 60px;
+  background-position: -240px -120px;
+}
+
+.-heal-1 {
+  width: 60px;
+  height: 60px;
+  background-position: -300px -120px;
+}
+
+.-heal-2 {
+  width: 60px;
+  height: 60px;
+  background-position: -360px -120px;
+}
+
+.-heal-3 {
+  width: 60px;
+  height: 60px;
+  background-position: 0 -180px;
+}
+
+.-heal-4 {
+  width: 60px;
+  height: 60px;
+  background-position: -60px -180px;
+}
+
+.-heal-5 {
+  width: 60px;
+  height: 60px;
+  background-position: -120px -180px;
+}
+
+.-heal-6 {
+  width: 60px;
+  height: 60px;
+  background-position: -180px -180px;
+}
+
+.-ice-1 {
+  width: 60px;
+  height: 60px;
+  background-position: -240px -180px;
+}
+
+.-ice-2 {
+  width: 60px;
+  height: 60px;
+  background-position: -300px -180px;
+}
+
+.-ice-3 {
+  width: 60px;
+  height: 60px;
+  background-position: -360px -180px;
+}
+
+.-ice-4 {
+  width: 60px;
+  height: 60px;
+  background-position: 0 -240px;
+}
+
+.-ice-5 {
+  width: 60px;
+  height: 60px;
+  background-position: -60px -240px;
+}
+
+.-ice-6 {
+  width: 60px;
+  height: 60px;
+  background-position: -120px -240px;
+}
+
+.-lightning-1 {
+  width: 60px;
+  height: 60px;
+  background-position: -180px -240px;
+}
+
+.-lightning-2 {
+  width: 60px;
+  height: 60px;
+  background-position: -240px -240px;
+}
+
+.-lightning-3 {
+  width: 60px;
+  height: 60px;
+  background-position: -300px -240px;
+}
+
+.-lightning-4 {
+  width: 60px;
+  height: 60px;
+  background-position: -360px -240px;
+}
+
+.-lightning-5 {
+  width: 60px;
+  height: 60px;
+  background-position: 0 -300px;
+}
+
+.-lightning-6 {
+  width: 60px;
+  height: 60px;
+  background-position: -60px -300px;
+}
+
+.-nature-1 {
+  width: 60px;
+  height: 60px;
+  background-position: -120px -300px;
+}
+
+.-nature-2 {
+  width: 60px;
+  height: 60px;
+  background-position: -180px -300px;
+}
+
+.-nature-3 {
+  width: 60px;
+  height: 60px;
+  background-position: -240px -300px;
+}
+
+.-nature-4 {
+  width: 60px;
+  height: 60px;
+  background-position: -300px -300px;
+}
+
+.-nature-5 {
+  width: 60px;
+  height: 60px;
+  background-position: -360px -300px;
+}
+
+.-nature-6 {
+  width: 60px;
+  height: 60px;
+  background-position: 0 -360px;
+}
+
+.-shadow-1 {
+  width: 60px;
+  height: 60px;
+  background-position: -60px -360px;
+}
+
+.-shadow-2 {
+  width: 60px;
+  height: 60px;
+  background-position: -120px -360px;
+}
+
+.-shadow-3 {
+  width: 60px;
+  height: 60px;
+  background-position: -180px -360px;
+}
+
+.-shadow-4 {
+  width: 60px;
+  height: 60px;
+  background-position: -240px -360px;
+}
+
+.-shadow-5 {
+  width: 60px;
+  height: 60px;
+  background-position: -300px -360px;
+}
+
+.-shadow-6 {
+  width: 60px;
+  height: 60px;
+  background-position: -360px -360px;
+}
+
+.-support-1 {
+  width: 60px;
+  height: 60px;
+  background-position: -420px 0;
+}
+
+.-support-2 {
+  width: 60px;
+  height: 60px;
+  background-position: -420px -60px;
+}
+
+.-support-3 {
+  width: 60px;
+  height: 60px;
+  background-position: -420px -120px;
+}
+
+.-support-4 {
+  width: 60px;
+  height: 60px;
+  background-position: -420px -180px;
+}
+
+.-support-5 {
+  width: 60px;
+  height: 60px;
+  background-position: -420px -240px;
+}
+
+.-support-6 {
+  width: 60px;
+  height: 60px;
+  background-position: -420px -300px;
+}
+
+
+
+.statsprite{
+  background:url("http://res.cloudinary.com/treborx555/image/upload/v1472414022/spritesheet_9_vyyt5q.png");
+  background-repeat: no-repeat;
+  display: block;
+}
+
+.-blood {
+  width: 30px;
+  height: 30px;
+  background-position: 0 0;
+}
+
+.-critical {
+  width: 30px;
+  height: 30px;
+  background-position: -30px 0;
+}
+
+.-damage {
+  width: 30px;
+  height: 30px;
+  background-position: -60px 0;
+}
+
+.-dodge {
+  width: 30px;
+  height: 30px;
+  background-position: 0 -30px;
+}
+
+.-fire {
+  width: 30px;
+  height: 30px;
+  background-position: -30px -30px;
+}
+
+.-healpow {
+  width: 30px;
+  height: 30px;
+  background-position: -60px -30px;
+}
+
+.-health {
+  width: 30px;
+  height: 30px;
+  background-position: 0 -60px;
+}
+
+.-ice {
+  width: 30px;
+  height: 30px;
+  background-position: -30px -60px;
+}
+
+.-lifesteal {
+  width: 30px;
+  height: 30px;
+  background-position: -60px -60px;
+}
+
+.-magicpow {
+  width: 30px;
+  height: 30px;
+  background-position: -90px 0;
+}
+
+.-mana {
+  width: 30px;
+  height: 30px;
+  background-position: -90px -30px;
+}
+
+.-nature {
+  width: 30px;
+  height: 30px;
+  background-position: -90px -60px;
+}
+
+.-shadow {
+  width: 30px;
+  height: 30px;
+  background-position: 0 -90px;
+}
+
+.-storm {
+  width: 30px;
+  height: 30px;
+  background-position: -30px -90px;
+}
+
+
+
+.tinyspellsprites {
+  background-image: url("http://res.cloudinary.com/treborx555/image/upload/v1472327630/spritesheet_8_igvtbg.png");
+  background-repeat: no-repeat;
+  display: block;
+}
+
+
+.basic {
+  width: 30px;
+  height: 30px;
+  background-position: 0 0;
+}
+
+.blood-1 {
+  width: 30px;
+  height: 30px;
+  background-position: -30px 0;
+}
+
+.blood-2 {
+  width: 30px;
+  height: 30px;
+  background-position: -60px 0;
+}
+
+.blood-3 {
+  width: 30px;
+  height: 30px;
+  background-position: -90px 0;
+}
+
+.blood-4 {
+  width: 30px;
+  height: 30px;
+  background-position: -120px 0;
+}
+
+.blood-5 {
+  width: 30px;
+  height: 30px;
+  background-position: -150px 0;
+}
+
+.blood-6 {
+  width: 30px;
+  height: 30px;
+  background-position: -180px 0;
+}
+
+.defend-1 {
+  width: 30px;
+  height: 30px;
+  background-position: 0 -30px;
+}
+
+.defend-2 {
+  width: 30px;
+  height: 30px;
+  background-position: -30px -30px;
+}
+
+.defend-3 {
+  width: 30px;
+  height: 30px;
+  background-position: -60px -30px;
+}
+
+.defend-4 {
+  width: 30px;
+  height: 30px;
+  background-position: -90px -30px;
+}
+
+.defend-5 {
+  width: 30px;
+  height: 30px;
+  background-position: -120px -30px;
+}
+
+.defend-6 {
+  width: 30px;
+  height: 30px;
+  background-position: -150px -30px;
+}
+
+.fire-1 {
+  width: 30px;
+  height: 30px;
+  background-position: -180px -30px;
+}
+
+.fire-2 {
+  width: 30px;
+  height: 30px;
+  background-position: 0 -60px;
+}
+
+.fire-3 {
+  width: 30px;
+  height: 30px;
+  background-position: -30px -60px;
+}
+
+.fire-4 {
+  width: 30px;
+  height: 30px;
+  background-position: -60px -60px;
+}
+
+.fire-5 {
+  width: 30px;
+  height: 30px;
+  background-position: -90px -60px;
+}
+
+.fire-6 {
+  width: 30px;
+  height: 30px;
+  background-position: -120px -60px;
+}
+
+.heal-1 {
+  width: 30px;
+  height: 30px;
+  background-position: -150px -60px;
+}
+
+.heal-2 {
+  width: 30px;
+  height: 30px;
+  background-position: -180px -60px;
+}
+
+.heal-3 {
+  width: 30px;
+  height: 30px;
+  background-position: 0 -90px;
+}
+
+.heal-4 {
+  width: 30px;
+  height: 30px;
+  background-position: -30px -90px;
+}
+
+.heal-5 {
+  width: 30px;
+  height: 30px;
+  background-position: -60px -90px;
+}
+
+.heal-6 {
+  width: 30px;
+  height: 30px;
+  background-position: -90px -90px;
+}
+
+.ice-1 {
+  width: 30px;
+  height: 30px;
+  background-position: -120px -90px;
+}
+
+.ice-2 {
+  width: 30px;
+  height: 30px;
+  background-position: -150px -90px;
+}
+
+.ice-3 {
+  width: 30px;
+  height: 30px;
+  background-position: -180px -90px;
+}
+
+.ice-4 {
+  width: 30px;
+  height: 30px;
+  background-position: 0 -120px;
+}
+
+.ice-5 {
+  width: 30px;
+  height: 30px;
+  background-position: -30px -120px;
+}
+
+.ice-6 {
+  width: 30px;
+  height: 30px;
+  background-position: -60px -120px;
+}
+
+.storm-1 {
+  width: 30px;
+  height: 30px;
+  background-position: -90px -120px;
+}
+
+.storm-2 {
+  width: 30px;
+  height: 30px;
+  background-position: -120px -120px;
+}
+
+.storm-3 {
+  width: 30px;
+  height: 30px;
+  background-position: -150px -120px;
+}
+
+.storm-4 {
+  width: 30px;
+  height: 30px;
+  background-position: -180px -120px;
+}
+
+.storm-5 {
+  width: 30px;
+  height: 30px;
+  background-position: 0 -150px;
+}
+
+.storm-6 {
+  width: 30px;
+  height: 30px;
+  background-position: -30px -150px;
+}
+
+.nature-1 {
+  width: 30px;
+  height: 30px;
+  background-position: -60px -150px;
+}
+
+.nature-2 {
+  width: 30px;
+  height: 30px;
+  background-position: -90px -150px;
+}
+
+.nature-3 {
+  width: 30px;
+  height: 30px;
+  background-position: -120px -150px;
+}
+
+.nature-4 {
+  width: 30px;
+  height: 30px;
+  background-position: -150px -150px;
+}
+
+.nature-5 {
+  width: 30px;
+  height: 30px;
+  background-position: -180px -150px;
+}
+
+.nature-6 {
+  width: 30px;
+  height: 30px;
+  background-position: 0 -180px;
+}
+
+.shadow-1 {
+  width: 30px;
+  height: 30px;
+  background-position: -30px -180px;
+}
+
+.shadow-2 {
+  width: 30px;
+  height: 30px;
+  background-position: -60px -180px;
+}
+
+.shadow-3 {
+  width: 30px;
+  height: 30px;
+  background-position: -90px -180px;
+}
+
+.shadow-4 {
+  width: 30px;
+  height: 30px;
+  background-position: -120px -180px;
+}
+
+.shadow-5 {
+  width: 30px;
+  height: 30px;
+  background-position: -150px -180px;
+}
+
+.shadow-6 {
+  width: 30px;
+  height: 30px;
+  background-position: -180px -180px;
+}
+
+.support-1 {
+  width: 30px;
+  height: 30px;
+  background-position: -210px 0;
+}
+
+.support-2 {
+  width: 30px;
+  height: 30px;
+  background-position: -210px -30px;
+}
+
+.support-3 {
+  width: 30px;
+  height: 30px;
+  background-position: -210px -60px;
+}
+
+.support-4 {
+  width: 30px;
+  height: 30px;
+  background-position: -210px -90px;
+}
+
+.support-5 {
+  width: 30px;
+  height: 30px;
+  background-position: -210px -120px;
+}
+
+.support-6 {
+  width: 30px;
+  height: 30px;
+  background-position: -210px -150px;
+}
+
+
+
+
+
+
+
+.infospells{
+  background-image: url("http://res.cloudinary.com/treborx555/image/upload/v1472455892/spritesheet_10_mgjpmb.png");
+  background-repeat: no-repeat;
+  display: block;
+}
+
+.-basicX {
+  width: 30px;
+  height: 30px;
+  background-position: 0 0;
+}
+
+.-blood-2X {
+  width: 30px;
+  height: 30px;
+  background-position: -30px 0;
+}
+
+.-blood-3X {
+  width: 30px;
+  height: 30px;
+  background-position: -60px 0;
+}
+
+.-defend-3X {
+  width: 30px;
+  height: 30px;
+  background-position: 0 -30px;
+}
+
+.-fire-3X {
+  width: 30px;
+  height: 30px;
+  background-position: -30px -30px;
+}
+
+.-heal-2X {
+  width: 30px;
+  height: 30px;
+  background-position: -60px -30px;
+}
+
+.-ice-1X {
+  width: 30px;
+  height: 30px;
+  background-position: 0 -60px;
+}
+
+.-lightning-2X {
+  width: 30px;
+  height: 30px;
+  background-position: -30px -60px;
+}
+
+.-nature-2X {
+  width: 30px;
+  height: 30px;
+  background-position: -60px -60px;
+}
+
+.-nature-4X {
+  width: 30px;
+  height: 30px;
+  background-position: -90px 0;
+}
+
+.-shadow-1X {
+  width: 30px;
+  height: 30px;
+  background-position: -90px -30px;
+}
+
+.-shadow-3X {
+  width: 30px;
+  height: 30px;
+  background-position: -90px -60px;
+}
+
+.-support-2X {
+  width: 30px;
+  height: 30px;
+  background-position: 0 -90px;
+}
+

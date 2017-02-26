@@ -3,6 +3,7 @@
  */
 var io;
 var gameSocket;
+var app;
 
 /**
  * This function is called by index.js to initialize a new game instance.
@@ -13,44 +14,56 @@ var gameSocket;
 exports.initGame = function(sio, socket){
     io = sio;
     gameSocket = socket;
+    app = {
+        gameId: 0,
+        players: [],
+    };
+
     gameSocket.emit('connected', { message: "You are connected!" });
 
-    // Host Events
-    gameSocket.on('hostCreateNewGame', hostCreateNewGame);
-    gameSocket.on('hostRoomFull', hostPrepareGame);
-    gameSocket.on('hostCountdownFinished', hostStartGame);
+    // Base Events
+    gameSocket.on('playerCreateNewGame', playerCreateNewGame);
+    gameSocket.on('roomFull', prepareGame);
+    gameSocket.on('hostCountdownFinished', startGame);
+
 
     // Player Events
     gameSocket.on('playerJoinGame', playerJoinGame);
-    gameSocket.on('playerSpell', playerSpell);
-    gameSocket.on('playerRestart', playerRestart);
+
 }
 
 /* *******************************
  *                             *
- *       HOST FUNCTIONS        *
+ *       BASE FUNCTIONS        *
  *                             *
  ******************************* */
 
 /**
- * The 'START' button was clicked and 'hostCreateNewGame' event occurred.
+ * The 'Create' button was clicked and 'playerCreateNewGame' event occurred.
  */
-function hostCreateNewGame() {
+function playerCreateNewGame(data) {
     // Create a unique Socket.IO Room
     var thisGameId = ( Math.random() * 100000 ) | 0;
 
     // Return the Room ID (gameId) and the socket ID (mySocketId) to the browser client
-    this.emit('newGameCreated', {gameId: thisGameId, mySocketId: this.id});
+    data.gameId = thisGameId;
+    data.mySocketId = this.id;
+    app.players.push(data);
+    app.gameId = thisGameId;
+    app.mySocketId = this.id;
+    this.emit('newGameCreated', app);
+    //console.log(thisGameId+" # "+this.id);
 
     // Join the Room and wait for the players
     this.join(thisGameId.toString());
+    //console.log(gameSocket.adapter.rooms);
 };
 
 /*
  * Two players have joined. Alert the host!
  * @param gameId The game ID / room ID
  */
-function hostPrepareGame(gameId) {
+function prepareGame(gameId) {
     var sock = this;
     var data = {
         mySocketId : sock.id,
@@ -64,9 +77,9 @@ function hostPrepareGame(gameId) {
  * The Countdown has finished, and the game begins!
  * @param gameId The game ID / room ID
  */
-function hostStartGame(gameId) {
+function startGame(gameId) {
     console.log('Game Started.');
-    sendArena(gameId);
+    sendGameData(gameId);
 };
 
 
@@ -98,11 +111,15 @@ function playerJoinGame(data) {
 
         // Join the room
         sock.join(data.gameId);
+        app.players.push(data);
+        app.mySocketId = sock.id;
 
+
+        //console.log(gameSocket.adapter.rooms);
         //console.log('Player ' + data.playerName + ' joining game: ' + data.gameId );
 
         // Emit an event notifying the clients that the player has joined the room.
-        io.sockets.in(data.gameId).emit('playerJoinedRoom', data);
+        io.sockets.in(data.gameId).emit('playerJoinedRoom', app);
 
     } else {
         // Otherwise, send an error message back to the player.
@@ -110,31 +127,6 @@ function playerJoinGame(data) {
     }
 }
 
-/**
- * A player has tapped a word in the word list.
- * @param data gameId
- */
-function playerSpell(data) {
-    // console.log('Player ID: ' + data.playerId + ' casted a spell: ' + data.spell);
-
-    // The player's answer is attached to the data object.  \
-    // Emit an event with the answer so it can be checked by the 'Host'
-    // io.sockets.in(data.gameId).emit('hostCheckAnswer', data);
-    var newData = updateArenaData(data);
-    io.sockets.in(data.gameId).emit('updatedArenaData', newData);
-}
-
-/**
- * The game is over, and a player has clicked a button to restart the game.
- * @param data
- */
-function playerRestart(data) {
-    // console.log('Player: ' + data.playerName + ' ready for new game.');
-
-    // Emit the player's data back to the clients in the game room.
-    data.playerId = this.id;
-    io.sockets.in(data.gameId).emit('playerJoinedRoom',data);
-}
 
 /* *************************
  *                       *
@@ -148,143 +140,6 @@ function playerRestart(data) {
  * @param wordPoolIndex
  * @param gameId The room identifier
  */
-function sendArena(gameId) {
-    var data = getArenaData(gameId);
-    io.sockets.in(data.gameId).emit('newArenaData', data);
+function sendGameData(gameId) {
+    io.sockets.in(gameId).emit('newGameData', app);
 }
-
-/**
- * This function does all the work of getting a new words from the pile
- * and organizing the data to be sent back to the clients.
- *
- * @param i The index of the wordPool.
- * @returns {{round: *, word: *, answer: *, list: Array}}
- */
-function getArenaData(gameId){
-
-    // Package the words into a single object.
-    var arenaData = {
-        gameId: gameId,
-        players: [],
-    };
-
-    return arenaData;
-}
-
-
-/**
- * This function does all the work of getting a new words from the pile
- * and organizing the data to be sent back to the clients.
- *
- * @param data The spell data.
- * @returns {{round: *, word: *, answer: *, list: Array}}
- */
-function updateArenaData(data){
-    // Randomize the order of the available words.
-    // The first element in the randomized array will be displayed on the host screen.
-    // The second element will be hidden in a list of decoys as the correct answer
-    var words = shuffle(wordPool[i].words);
-
-    // Randomize the order of the decoy words and choose the first 5
-    var decoys = shuffle(wordPool[i].decoys).slice(0,5);
-
-    // Pick a random spot in the decoy list to put the correct answer
-    var rnd = Math.floor(Math.random() * 5);
-    decoys.splice(rnd, 0, words[1]);
-
-    // Package the words into a single object.
-    var wordData = {
-        round: i,
-        word : words[0],   // Displayed Word
-        answer : words[1], // Correct Answer
-        list : decoys      // Word list for player (decoys and answer)
-    };
-
-    return arenaData;
-}
-
-/*
- * Javascript implementation of Fisher-Yates shuffle algorithm
- * http://stackoverflow.com/questions/2450954/how-to-randomize-a-javascript-array
- */
-function shuffle(array) {
-    var currentIndex = array.length;
-    var temporaryValue;
-    var randomIndex;
-
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
-
-/**
- * Each element in the array provides data for a single round in the game.
- *
- * In each round, two random "words" are chosen as the host word and the correct answer.
- * Five random "decoys" are chosen to make up the list displayed to the player.
- * The correct answer is randomly inserted into the list of chosen decoys.
- *
- * @type {Array}
- */
-var wordPool = [
-    {
-        "words"  : [ "sale","seal","ales","leas" ],
-        "decoys" : [ "lead","lamp","seed","eels","lean","cels","lyse","sloe","tels","self" ]
-    },
-
-    {
-        "words"  : [ "item","time","mite","emit" ],
-        "decoys" : [ "neat","team","omit","tame","mate","idem","mile","lime","tire","exit" ]
-    },
-
-    {
-        "words"  : [ "spat","past","pats","taps" ],
-        "decoys" : [ "pots","laps","step","lets","pint","atop","tapa","rapt","swap","yaps" ]
-    },
-
-    {
-        "words"  : [ "nest","sent","nets","tens" ],
-        "decoys" : [ "tend","went","lent","teen","neat","ante","tone","newt","vent","elan" ]
-    },
-
-    {
-        "words"  : [ "pale","leap","plea","peal" ],
-        "decoys" : [ "sale","pail","play","lips","slip","pile","pleb","pled","help","lope" ]
-    },
-
-    {
-        "words"  : [ "races","cares","scare","acres" ],
-        "decoys" : [ "crass","scary","seeds","score","screw","cager","clear","recap","trace","cadre" ]
-    },
-
-    {
-        "words"  : [ "bowel","elbow","below","beowl" ],
-        "decoys" : [ "bowed","bower","robed","probe","roble","bowls","blows","brawl","bylaw","ebola" ]
-    },
-
-    {
-        "words"  : [ "dates","stead","sated","adset" ],
-        "decoys" : [ "seats","diety","seeds","today","sited","dotes","tides","duets","deist","diets" ]
-    },
-
-    {
-        "words"  : [ "spear","parse","reaps","pares" ],
-        "decoys" : [ "ramps","tarps","strep","spore","repos","peris","strap","perms","ropes","super" ]
-    },
-
-    {
-        "words"  : [ "stone","tones","steno","onset" ],
-        "decoys" : [ "snout","tongs","stent","tense","terns","santo","stony","toons","snort","stint" ]
-    }
-]
