@@ -206,6 +206,7 @@ jQuery(function($){
                 $("#spell8").removeClass('down');
             });
 
+
             // Spells
             App.$doc.on('click', '#spell1', App.Player.putInCombo);
             App.$doc.on('click', '#spell2', App.Player.putInCombo);
