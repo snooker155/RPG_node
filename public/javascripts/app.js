@@ -36,6 +36,8 @@ jQuery(function($){
             IO.socket.on('playerJoinedRoom', IO.playerJoinedRoom );
             IO.socket.on('beginNewGame', IO.beginNewGame );
             IO.socket.on('newGameData', IO.onNewGameData);
+            IO.socket.on('opponentCombo', IO.onOpponentCombo);
+            IO.socket.on('comboSpell', IO.onComboSpell);
         },
 
 
@@ -92,6 +94,14 @@ jQuery(function($){
 
             // Change the word for the Host and Player
             App.newGameData(data);
+        },
+
+        onOpponentCombo: function(data){
+            console.log(data);
+        },
+
+        onComboSpell: function(data){
+            console.log(data);
         },
 
     };
@@ -338,6 +348,18 @@ jQuery(function($){
             App.$gameArea.html(App.$game);
         },
 
+        /**
+         * Show the word for the current round on screen.
+         * @param data{{round: *, word: *, answer: *, list: Array}}
+         */
+        resetSpellText : function () {
+            $("#spell_name").text("");
+            $("#spell_type").text("");
+            $("#spell_type").attr("class", "");
+            $("#spell_damage").text("");
+            $("#spell_manacost").text("");
+        },
+
 
 
         /* *****************************
@@ -355,6 +377,21 @@ jQuery(function($){
              * The player's name entered on the 'Join' screen.
              */
             myName: '',
+
+            /**
+             * The player's combo spell.
+             */
+            combo: [],
+
+            /**
+             * The player's combo spell.
+             */
+            comboSpell: {},
+
+            /**
+             * The player's previous combo spell.
+             */
+            previousComboSpell: {},
 
 
 
@@ -427,7 +464,60 @@ jQuery(function($){
             },
 
             putInCombo: function() {
-                console.log('cast spell');
+                console.log($(this).attr('data-spell'));
+                var spell = $(this).attr('data-spell');
+                var spell_class = $(this).attr('data-class');
+
+                var i = 0;
+                while (i != 3) {
+                //while (i != 2) {
+                    if(!App.Player.combo[i]){
+                        $("#"+i+"_spell").addClass(spell_class);
+                        App.Player.combo[i] = {
+                            spell: spell,
+                            icon_class: spell_class,
+                        };
+
+                        //console.log(App.Player.combo);
+
+                        if(App.Player.previousComboSpell.spell) {
+                            $("#spell_to_cast").removeClass(App.Player.previousComboSpell.icon_class);
+                            App.resetSpellText();
+                        }
+
+                        break;
+                    }
+                    if(App.Player.combo[2]){
+                        $("#0_spell").removeClass(App.Player.combo[0].icon_class);
+                        $("#1_spell").removeClass(App.Player.combo[1].icon_class);
+                        $("#2_spell").removeClass(App.Player.combo[2].icon_class);
+
+                        $("#0_spell").addClass(App.Player.combo[1].icon_class);
+                        //$("#1_spell").addClass(object.icon_class);
+                        $("#1_spell").addClass(App.Player.combo[2].icon_class);
+                        $("#2_spell").addClass(spell_class);
+
+                        App.Player.combo[0] = App.Player.combo[1];
+                        //App.Player.comboSpell[1] = spell;
+                        App.Player.combo[1] = App.Player.combo[2];
+                        App.Player.combo[2] = {
+                            spell: spell,
+                            icon_class: spell_class,
+                        };
+
+                        if(App.Player.previousComboSpell.spell) {
+                            $("#spell_to_cast").removeClass(App.Player.previousComboSpell.icon_class);
+                            App.resetSpellText();
+                        }
+
+                        //console.log(App.Player.combo);
+
+                        break;
+                    }
+                    i++;
+                }
+
+                IO.socket.emit('playerCastSpell', App.Player.combo);
             },
 
             castSpell: function(){

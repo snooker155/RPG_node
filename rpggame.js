@@ -29,6 +29,7 @@ exports.initGame = function(sio, socket){
 
     // Player Events
     gameSocket.on('playerJoinGame', playerJoinGame);
+    gameSocket.on('playerCastSpell', playerCastSpell);
 
 }
 
@@ -128,6 +129,29 @@ function playerJoinGame(data) {
 }
 
 
+
+function playerCastSpell(combo) {
+    var self = this;
+    var playerCombo = $.map(combo, function(n){
+        return n.spell;
+    });
+    app.players.forEach(function(player){
+        if(player.mySocketId == self.id){
+            console.log(playerCombo);
+            player.combo = playerCombo;
+            //io.sockets.sockets[player.mySocketId].emit('opponentCombo', combo);
+        }else{
+            io.sockets.sockets[player.mySocketId].emit('opponentCombo', combo);
+        }
+    });
+
+    var comboSpell = findSpell(playerCombo);
+    self.emit('comboSpell', comboSpell);
+
+    //console.log(app.players);
+}
+
+
 /* *************************
  *                       *
  *      GAME LOGIC       *
@@ -143,3 +167,26 @@ function playerJoinGame(data) {
 function sendGameData(gameId) {
     io.sockets.in(gameId).emit('newGameData', app);
 }
+
+/**
+ * Get a word for the host, and a list of words for the player.
+ *
+ * @param wordPoolIndex
+ * @param gameId The room identifier
+ */
+function findSpell(combo) {
+    var comboSpell = spells[combo];
+    return comboSpell;
+}
+
+
+/**
+ * Each element in the array provides data for a single round in the game.
+ *
+ * In each round, two random "words" are chosen as the host word and the correct answer.
+ * Five random "decoys" are chosen to make up the list displayed to the player.
+ * The correct answer is randomly inserted into the list of chosen decoys.
+ *
+ * @type {Array}
+ */
+var spells = {};
