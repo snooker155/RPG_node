@@ -175,6 +175,7 @@ function sendGameData(gameId) {
  * @param gameId The room identifier
  */
 function findSpell(combo) {
+    combo = combo.join("");
     var comboSpell = spells[combo];
     return comboSpell;
 }
@@ -189,4 +190,138 @@ function findSpell(combo) {
  *
  * @type {Array}
  */
-var spells = {};
+var spells = {
+    1: {
+        letter: "F",
+        icon_class: ,
+        spell_name: ,
+        type: ,
+        manacost: ,
+        healthcost: ,
+        cooldown: ,
+    },
+    2: {
+        letter: "I",
+        icon_class: ,
+        spell_name: ,
+        type: ,
+        manacost: ,
+        healthcost: ,
+        cooldown: ,
+    },
+    3: {
+        letter: "S",
+        icon_class: ,
+        spell_name: ,
+        type: ,
+        manacost: ,
+        healthcost: ,
+        cooldown: ,
+    },
+    4: {
+        letter: "N",
+        icon_class: ,
+        spell_name: ,
+        type: ,
+        manacost: ,
+        healthcost: ,
+        cooldown: ,
+    },
+    5: {
+        letter: "C",
+        icon_class: ,
+        spell_name: ,
+        type: ,
+        manacost: ,
+        healthcost: ,
+        cooldown: ,
+    },
+    6: {
+        letter: "B",
+        icon_class: ,
+        spell_name: ,
+        type: ,
+        manacost: ,
+        healthcost: ,
+        cooldown: ,
+    },
+    7: {
+        letter: "W",
+        icon_class: ,
+        spell_name: ,
+        type: ,
+        manacost: ,
+        healthcost: ,
+        cooldown: ,
+    },
+    8: {
+        letter: "D",
+        icon_class: ,
+        spell_name: ,
+        type: ,
+        manacost: ,
+        healthcost: ,
+        cooldown: ,
+    },
+
+    //// Fire two spells
+
+    11: {},
+    12: {},
+    13: {},
+    14: {},
+    15: {},
+    16: {},
+    17: {},
+    18: {},
+
+    //// Ice two spells
+
+    22: {},
+    23: {},
+    24: {},
+    25: {},
+    26: {},
+    27: {},
+    28: {},
+
+    //// Storm two spells
+
+    33: {},
+    34: {},
+    35: {},
+    36: {},
+    37: {},
+    38: {},
+
+    //// Nature two spells
+
+    44: {},
+    45: {},
+    46: {},
+    47: {},
+    48: {},
+
+    //// Cabal two spells
+
+    55: {},
+    56: {},
+    57: {},
+    58: {},
+
+    //// Blood two spells
+
+    66: {},
+    67: {},
+    68: {},
+
+    //// Weapon two spells
+
+    77: {},
+    78: {},
+
+    //// Defend two spells
+
+    88: {},
+
+};
