@@ -864,10 +864,286 @@ p {
 }
 
 
+/*Spells sprites*/
+.spellsprite {
+    background-image: url(/images/spells_sprites.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite-Blood {
+    width: 64px;
+    height: 64px;
+    background-position: -5px -5px;
+}
+
+.sprite-Blood-Ritual {
+    width: 64px;
+    height: 64px;
+    background-position: -79px -5px;
+}
+
+.sprite-Blood-Shield {
+    width: 64px;
+    height: 64px;
+    background-position: -153px -5px;
+}
+
+.sprite-Blood-Sword {
+    width: 64px;
+    height: 64px;
+    background-position: -227px -5px;
+}
+
+.sprite-Cabal {
+    width: 64px;
+    height: 64px;
+    background-position: -301px -5px;
+}
+
+.sprite-Dark-Flame {
+    width: 64px;
+    height: 64px;
+    background-position: -375px -5px;
+}
+
+.sprite-Dark-Shield {
+    width: 64px;
+    height: 64px;
+    background-position: -5px -79px;
+}
+
+.sprite-Dark-Sword {
+    width: 64px;
+    height: 64px;
+    background-position: -79px -79px;
+}
+
+.sprite-Defence {
+    width: 64px;
+    height: 64px;
+    background-position: -153px -79px;
+}
+
+.sprite-Eclipse {
+    width: 64px;
+    height: 64px;
+    background-position: -227px -79px;
+}
+
+.sprite-Electric-void {
+    width: 64px;
+    height: 64px;
+    background-position: -301px -79px;
+}
+
+.sprite-Fire {
+    width: 64px;
+    height: 64px;
+    background-position: -375px -79px;
+}
+
+.sprite-Fire-Elemental {
+    width: 64px;
+    height: 64px;
+    background-position: -5px -153px;
+}
+
+.sprite-Fire-Sword {
+    width: 64px;
+    height: 64px;
+    background-position: -79px -153px;
+}
+
+.sprite-Fire-shield {
+    width: 64px;
+    height: 64px;
+    background-position: -153px -153px;
+}
+
+.sprite-Fireball {
+    width: 64px;
+    height: 64px;
+    background-position: -227px -153px;
+}
+
+.sprite-Fireblood {
+    width: 64px;
+    height: 64px;
+    background-position: -301px -153px;
+}
+
+.sprite-Firerain {
+    width: 64px;
+    height: 64px;
+    background-position: -375px -153px;
+}
+
+.sprite-Force-of-Nature {
+    width: 64px;
+    height: 64px;
+    background-position: -5px -227px;
+}
+
+.sprite-Frost-Blood {
+    width: 64px;
+    height: 64px;
+    background-position: -79px -227px;
+}
+
+.sprite-Frostfire {
+    width: 64px;
+    height: 64px;
+    background-position: -153px -227px;
+}
+
+.sprite-Great-Blood {
+    width: 64px;
+    height: 64px;
+    background-position: -227px -227px;
+}
+
+.sprite-Great-Curse {
+    width: 64px;
+    height: 64px;
+    background-position: -301px -227px;
+}
+
+.sprite-Great-Nature {
+    width: 64px;
+    height: 64px;
+    background-position: -375px -227px;
+}
+
+.sprite-Ice {
+    width: 64px;
+    height: 64px;
+    background-position: -5px -301px;
+}
+
+.sprite-Ice-Prison {
+    width: 64px;
+    height: 64px;
+    background-position: -79px -301px;
+}
+
+.sprite-Ice-Sword {
+    width: 64px;
+    height: 64px;
+    background-position: -153px -301px;
+}
+
+.sprite-Ice-blust {
+    width: 64px;
+    height: 64px;
+    background-position: -227px -301px;
+}
+
+.sprite-Ice-shield {
+    width: 64px;
+    height: 64px;
+    background-position: -301px -301px;
+}
+
+.sprite-Icebolt {
+    width: 64px;
+    height: 64px;
+    background-position: -375px -301px;
+}
+
+.sprite-Into-the-Battle {
+    width: 64px;
+    height: 64px;
+    background-position: -5px -375px;
+}
+
+.sprite-Lightning-Sword {
+    width: 64px;
+    height: 64px;
+    background-position: -79px -375px;
+}
+
+.sprite-Nature {
+    width: 64px;
+    height: 64px;
+    background-position: -153px -375px;
+}
+
+.sprite-Nature-Protection {
+    width: 64px;
+    height: 64px;
+    background-position: -227px -375px;
+}
+
+.sprite-Power-of-Gods {
+    width: 64px;
+    height: 64px;
+    background-position: -301px -375px;
+}
+
+.sprite-Release-Undeads {
+    width: 64px;
+    height: 64px;
+    background-position: -375px -375px;
+}
+
+.sprite-Storm {
+    width: 64px;
+    height: 64px;
+    background-position: -449px -5px;
+}
+
+.sprite-Storm-Shield {
+    width: 64px;
+    height: 64px;
+    background-position: -449px -79px;
+}
+
+.sprite-Stormbolt {
+    width: 64px;
+    height: 64px;
+    background-position: -449px -153px;
+}
+
+.sprite-Strong-Defence {
+    width: 64px;
+    height: 64px;
+    background-position: -449px -227px;
+}
+
+.sprite-Summon-Beasts {
+    width: 64px;
+    height: 64px;
+    background-position: -449px -301px;
+}
+
+.sprite-Two-handed-sword {
+    width: 64px;
+    height: 64px;
+    background-position: -449px -375px;
+}
+
+.sprite-Weapon {
+    width: 64px;
+    height: 64px;
+    background-position: -5px -449px;
+}
+
+.sprite-Winter {
+    width: 64px;
+    height: 64px;
+    background-position: -79px -449px;
+}
+
+
+
+
+
+
 
 
 /* SPELL SPRITES NOW */
-.spellsprite {
+/*.spellsprite {
   background-image: url("http://res.cloudinary.com/treborx555/image/upload/v1472247353/spritesheet_ne1oxv.png");
   background-repeat: no-repeat;
   display: block;
@@ -1722,5 +1998,4 @@ p {
   width: 30px;
   height: 30px;
   background-position: 0 -90px;
-}
-
+}*/

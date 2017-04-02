@@ -1,0 +1,110 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install' ]
+2 info using npm@3.3.12
+3 info using node@v5.4.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly install normalizeTree
+8 silly loadCurrentTree Finishing
+9 silly loadIdealTree Starting
+10 silly install loadIdealTree
+11 silly cloneCurrentTree Starting
+12 silly install cloneCurrentTreeToIdealTree
+13 silly cloneCurrentTree Finishing
+14 silly loadShrinkwrap Starting
+15 silly install loadShrinkwrap
+16 silly loadShrinkwrap Finishing
+17 silly loadAllDepsIntoIdealTree Starting
+18 silly install loadAllDepsIntoIdealTree
+19 silly fetchNamedPackageData socket.io
+20 silly mapToRegistry name socket.io
+21 silly mapToRegistry using default registry
+22 silly mapToRegistry registry https://registry.npmjs.org/
+23 silly mapToRegistry uri https://registry.npmjs.org/socket.io
+24 verbose request uri https://registry.npmjs.org/socket.io
+25 verbose request no auth needed
+26 info attempt registry request try #1 at 16:35:48
+27 verbose request id e0a4238d1f2bacf0
+28 verbose etag W/"58a77657-24a9c"
+29 verbose lastModified Fri, 17 Feb 2017 22:16:55 GMT
+30 http request GET https://registry.npmjs.org/socket.io
+31 http 200 https://registry.npmjs.org/socket.io
+32 verbose headers { server: 'nginx/1.10.1',
+32 verbose headers   'content-type': 'application/json',
+32 verbose headers   'last-modified': 'Tue, 21 Feb 2017 09:40:06 GMT',
+32 verbose headers   etag: 'W/"58ac0af6-24af1"',
+32 verbose headers   'content-encoding': 'gzip',
+32 verbose headers   'cache-control': 'max-age=300',
+32 verbose headers   'content-length': '19423',
+32 verbose headers   'accept-ranges': 'bytes',
+32 verbose headers   date: 'Thu, 23 Feb 2017 13:35:46 GMT',
+32 verbose headers   via: '1.1 varnish',
+32 verbose headers   age: '104',
+32 verbose headers   connection: 'keep-alive',
+32 verbose headers   'x-served-by': 'cache-ams4128-AMS',
+32 verbose headers   'x-cache': 'HIT',
+32 verbose headers   'x-cache-hits': '2',
+32 verbose headers   'x-timer': 'S1487856946.020961,VS0,VE0',
+32 verbose headers   vary: 'Accept-Encoding' }
+33 silly get cb [ 200,
+33 silly get   { server: 'nginx/1.10.1',
+33 silly get     'content-type': 'application/json',
+33 silly get     'last-modified': 'Tue, 21 Feb 2017 09:40:06 GMT',
+33 silly get     etag: 'W/"58ac0af6-24af1"',
+33 silly get     'content-encoding': 'gzip',
+33 silly get     'cache-control': 'max-age=300',
+33 silly get     'content-length': '19423',
+33 silly get     'accept-ranges': 'bytes',
+33 silly get     date: 'Thu, 23 Feb 2017 13:35:46 GMT',
+33 silly get     via: '1.1 varnish',
+33 silly get     age: '104',
+33 silly get     connection: 'keep-alive',
+33 silly get     'x-served-by': 'cache-ams4128-AMS',
+33 silly get     'x-cache': 'HIT',
+33 silly get     'x-cache-hits': '2',
+33 silly get     'x-timer': 'S1487856946.020961,VS0,VE0',
+33 silly get     vary: 'Accept-Encoding' } ]
+34 verbose get saving socket.io to C:\Users\Anton\AppData\Roaming\npm-cache\registry.npmjs.org\socket.io\.cache.json
+35 silly fetchPackageMetaData Error: No compatible version found: socket.io@^3.3.12
+35 silly fetchPackageMetaData Valid install targets:
+35 silly fetchPackageMetaData 1.7.3, 1.7.2, 1.7.1, 1.7.0, 1.6.0, 1.5.1, 1.5.0, 1.4.8, 1.4.7, 1.4.6, 1.4.5, 1.4.4, 1.4.3, 1.4.2, 1.4.1, 1.4.0, 1.3.7, 1.3.6, 1.3.5, 1.3.4, 1.3.3, 1.3.2, 1.3.1, 1.3.0, 1.2.1, 1.2.0, 1.1.0, 1.0.6, 1.0.5, 1.0.4, 1.0.3, 1.0.2, 1.0.1, 1.0.0, 1.0.0-pre5, 1.0.0-pre4, 1.0.0-pre3, 1.0.0-pre2, 1.0.0-pre, 0.9.17, 0.9.16, 0.9.15, 0.9.14, 0.9.13, 0.9.12, 0.9.11, 0.9.10, 0.9.9, 0.9.8, 0.9.7, 0.9.6, 0.9.5, 0.9.4, 0.9.3, 0.9.2, 0.9.1, 0.9.1-1, 0.9.0, 0.8.7, 0.8.6, 0.8.5, 0.8.4, 0.8.3, 0.8.2, 0.8.1, 0.8.0, 0.7.11, 0.7.10, 0.7.9, 0.7.8, 0.7.7, 0.7.6, 0.7.5, 0.7.4, 0.7.3, 0.7.2, 0.7.1, 0.7.0, 0.6.18, 0.6.17, 0.6.16, 0.6.15, 0.6.14, 0.6.12, 0.6.11, 0.6.10, 0.6.9, 0.6.8, 0.6.7, 0.6.6, 0.6.5, 0.6.4, 0.6.3, 0.6.1, 0.6.0, 0.5.3, 0.5.1, 0.4.1, 0.4.0, 0.3.8
+35 silly fetchPackageMetaData
+35 silly fetchPackageMetaData     at pickVersionFromRegistryDocument (C:\Program Files\nodejs\node_modules\npm\lib\fetch-package-metadata.js:156:16)
+35 silly fetchPackageMetaData     at C:\Program Files\nodejs\node_modules\npm\node_modules\iferr\index.js:13:50
+35 silly fetchPackageMetaData     at C:\Program Files\nodejs\node_modules\npm\lib\utils\pulse-till-done.js:19:8
+35 silly fetchPackageMetaData     at saved (C:\Program Files\nodejs\node_modules\npm\lib\cache\caching-client.js:168:7)
+35 silly fetchPackageMetaData     at C:\Program Files\nodejs\node_modules\npm\node_modules\graceful-fs\polyfills.js:210:7
+35 silly fetchPackageMetaData     at FSReqWrap.oncomplete (fs.js:82:15)
+35 silly fetchPackageMetaData  error for socket.io@^3.3.12 [Error: No compatible version found: socket.io@^3.3.12
+35 silly fetchPackageMetaData Valid install targets:
+35 silly fetchPackageMetaData 1.7.3, 1.7.2, 1.7.1, 1.7.0, 1.6.0, 1.5.1, 1.5.0, 1.4.8, 1.4.7, 1.4.6, 1.4.5, 1.4.4, 1.4.3, 1.4.2, 1.4.1, 1.4.0, 1.3.7, 1.3.6, 1.3.5, 1.3.4, 1.3.3, 1.3.2, 1.3.1, 1.3.0, 1.2.1, 1.2.0, 1.1.0, 1.0.6, 1.0.5, 1.0.4, 1.0.3, 1.0.2, 1.0.1, 1.0.0, 1.0.0-pre5, 1.0.0-pre4, 1.0.0-pre3, 1.0.0-pre2, 1.0.0-pre, 0.9.17, 0.9.16, 0.9.15, 0.9.14, 0.9.13, 0.9.12, 0.9.11, 0.9.10, 0.9.9, 0.9.8, 0.9.7, 0.9.6, 0.9.5, 0.9.4, 0.9.3, 0.9.2, 0.9.1, 0.9.1-1, 0.9.0, 0.8.7, 0.8.6, 0.8.5, 0.8.4, 0.8.3, 0.8.2, 0.8.1, 0.8.0, 0.7.11, 0.7.10, 0.7.9, 0.7.8, 0.7.7, 0.7.6, 0.7.5, 0.7.4, 0.7.3, 0.7.2, 0.7.1, 0.7.0, 0.6.18, 0.6.17, 0.6.16, 0.6.15, 0.6.14, 0.6.12, 0.6.11, 0.6.10, 0.6.9, 0.6.8, 0.6.7, 0.6.6, 0.6.5, 0.6.4, 0.6.3, 0.6.1, 0.6.0, 0.5.3, 0.5.1, 0.4.1, 0.4.0, 0.3.8
+35 silly fetchPackageMetaData ]
+36 silly rollbackFailedOptional Starting
+37 silly rollbackFailedOptional Finishing
+38 silly runTopLevelLifecycles Starting
+39 silly runTopLevelLifecycles Finishing
+40 silly install printInstalled
+41 verbose stack Error: No compatible version found: socket.io@^3.3.12
+41 verbose stack Valid install targets:
+41 verbose stack 1.7.3, 1.7.2, 1.7.1, 1.7.0, 1.6.0, 1.5.1, 1.5.0, 1.4.8, 1.4.7, 1.4.6, 1.4.5, 1.4.4, 1.4.3, 1.4.2, 1.4.1, 1.4.0, 1.3.7, 1.3.6, 1.3.5, 1.3.4, 1.3.3, 1.3.2, 1.3.1, 1.3.0, 1.2.1, 1.2.0, 1.1.0, 1.0.6, 1.0.5, 1.0.4, 1.0.3, 1.0.2, 1.0.1, 1.0.0, 1.0.0-pre5, 1.0.0-pre4, 1.0.0-pre3, 1.0.0-pre2, 1.0.0-pre, 0.9.17, 0.9.16, 0.9.15, 0.9.14, 0.9.13, 0.9.12, 0.9.11, 0.9.10, 0.9.9, 0.9.8, 0.9.7, 0.9.6, 0.9.5, 0.9.4, 0.9.3, 0.9.2, 0.9.1, 0.9.1-1, 0.9.0, 0.8.7, 0.8.6, 0.8.5, 0.8.4, 0.8.3, 0.8.2, 0.8.1, 0.8.0, 0.7.11, 0.7.10, 0.7.9, 0.7.8, 0.7.7, 0.7.6, 0.7.5, 0.7.4, 0.7.3, 0.7.2, 0.7.1, 0.7.0, 0.6.18, 0.6.17, 0.6.16, 0.6.15, 0.6.14, 0.6.12, 0.6.11, 0.6.10, 0.6.9, 0.6.8, 0.6.7, 0.6.6, 0.6.5, 0.6.4, 0.6.3, 0.6.1, 0.6.0, 0.5.3, 0.5.1, 0.4.1, 0.4.0, 0.3.8
+41 verbose stack
+41 verbose stack     at pickVersionFromRegistryDocument (C:\Program Files\nodejs\node_modules\npm\lib\fetch-package-metadata.js:156:16)
+41 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\iferr\index.js:13:50
+41 verbose stack     at C:\Program Files\nodejs\node_modules\npm\lib\utils\pulse-till-done.js:19:8
+41 verbose stack     at saved (C:\Program Files\nodejs\node_modules\npm\lib\cache\caching-client.js:168:7)
+41 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\graceful-fs\polyfills.js:210:7
+41 verbose stack     at FSReqWrap.oncomplete (fs.js:82:15)
+42 verbose cwd C:\Users\Anton\IdeaProjects\RPG_node
+43 error Windows_NT 6.1.7601
+44 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install"
+45 error node v5.4.0
+46 error npm  v3.3.12
+47 error No compatible version found: socket.io@^3.3.12
+47 error Valid install targets:
+47 error 1.7.3, 1.7.2, 1.7.1, 1.7.0, 1.6.0, 1.5.1, 1.5.0, 1.4.8, 1.4.7, 1.4.6, 1.4.5, 1.4.4, 1.4.3, 1.4.2, 1.4.1, 1.4.0, 1.3.7, 1.3.6, 1.3.5, 1.3.4, 1.3.3, 1.3.2, 1.3.1, 1.3.0, 1.2.1, 1.2.0, 1.1.0, 1.0.6, 1.0.5, 1.0.4, 1.0.3, 1.0.2, 1.0.1, 1.0.0, 1.0.0-pre5, 1.0.0-pre4, 1.0.0-pre3, 1.0.0-pre2, 1.0.0-pre, 0.9.17, 0.9.16, 0.9.15, 0.9.14, 0.9.13, 0.9.12, 0.9.11, 0.9.10, 0.9.9, 0.9.8, 0.9.7, 0.9.6, 0.9.5, 0.9.4, 0.9.3, 0.9.2, 0.9.1, 0.9.1-1, 0.9.0, 0.8.7, 0.8.6, 0.8.5, 0.8.4, 0.8.3, 0.8.2, 0.8.1, 0.8.0, 0.7.11, 0.7.10, 0.7.9, 0.7.8, 0.7.7, 0.7.6, 0.7.5, 0.7.4, 0.7.3, 0.7.2, 0.7.1, 0.7.0, 0.6.18, 0.6.17, 0.6.16, 0.6.15, 0.6.14, 0.6.12, 0.6.11, 0.6.10, 0.6.9, 0.6.8, 0.6.7, 0.6.6, 0.6.5, 0.6.4, 0.6.3, 0.6.1, 0.6.0, 0.5.3, 0.5.1, 0.4.1, 0.4.0, 0.3.8
+48 error If you need help, you may report this error at:
+48 error     <https://github.com/npm/npm/issues>
+49 verbose exit [ 1, true ]
