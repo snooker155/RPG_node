@@ -181,6 +181,10 @@ jQuery(function($){
             App.$templateJoinGame = $('#join-game-template').html();
             App.$countGame = $('#count-template').html();
             App.$game = $('#game-template').html();
+            App.$playerHp = $('#playerhpbar');
+            App.$playerMana = $('#playermanabar');
+            App.$oppHp = $('#opponenthpbar');
+            App.$oppMana = $('#opponentmanabar');
         },
 
         /**
@@ -350,7 +354,21 @@ jQuery(function($){
          */
         newGameData : function(data) {
             // Insert the new word into the DOM
+            var self = this;
+            console.log(data);
+            App.$playerHp.text("123");
+            data.players.forEach(function(player){
+              if(player.mySocketId == App.mySocketId){
+                console.log(App.$playerHp);
+                App.$playerHp.text(player.hp);
+                App.$playerMana.text(player.mana);
+              }else{
+                App.$oppHp.text(player.hp);
+                App.$oppMana.text(player.mana);
+              }
+            })
             App.$gameArea.html(App.$game);
+
         },
 
         /**
@@ -425,6 +443,31 @@ jQuery(function($){
              */
             target: {},
 
+            /**
+             * The player's hp.
+             */
+            hp: 0,
+
+            /**
+             * The player's mana.
+             */
+            mana: 0,
+
+            /**
+             * The player's target.
+             */
+            buffs: [],
+
+            /**
+             * The player's target.
+             */
+            debuffs: [],
+
+            /**
+             * The player's target.
+             */
+            summons: [],
+
 
 
             /* *************************************
@@ -458,7 +501,9 @@ jQuery(function($){
 
                 //collect data to send to the server
                 var data = {
-                    playerName : $('#inputPlayerName').val() || 'anon'
+                    playerName : $('#inputPlayerName').val() || 'anon',
+                    hp: 2000,
+                    mana: 1000,
                 };
 
                 // Send the gameId and playerName to the server
@@ -491,6 +536,8 @@ jQuery(function($){
                 // Set the appropriate properties for the current player.
                 //App.myRole = 'Player';
                 App.Player.myName = data.playerName;
+                App.Player.hp = data.hp;
+                App.Player.mana = data.mana;
 
                 App.$gameArea.html(App.$templateWaitGame);
             },
