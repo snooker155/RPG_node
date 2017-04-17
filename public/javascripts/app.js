@@ -80,7 +80,7 @@ App = {
      * (with Start and Join buttons)
      */
     showInitScreen: function() {
-        App.$gameArea.html(Game.$templateIntroScreen);
+        App.$gameArea.html(App.$templateIntroScreen);
         App.doTextFit('.title');
     },
 
@@ -173,7 +173,7 @@ App = {
     gameCountdown : function() {
 
         // Prepare the game screen with new HTML
-        App.$gameArea.html(Game.$countGame);
+        App.$gameArea.html(App.$countGame);
         App.doTextFit('#hostWord');
 
         // Begin the on-screen countdown timer
@@ -200,7 +200,7 @@ App = {
 
         // Display the starting time on the screen.
         $el.text(startTime);
-        Game.doTextFit('#hostWord');
+        App.doTextFit('#hostWord');
 
         // console.log('Starting Countdown...');
 
@@ -211,7 +211,7 @@ App = {
         function countItDown(){
             startTime -= 1
             $el.text(startTime);
-            Game.doTextFit('#hostWord');
+            App.doTextFit('#hostWord');
 
             if( startTime <= 0 ){
                 // console.log('Countdown Finished.');

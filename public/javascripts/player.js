@@ -70,7 +70,7 @@ Player = {
      */
     onCreateClick: function () {
         // console.log('Clicked "Create A Game"');
-        Game.$gameArea.html(Game.$templateNewGame);
+        App.$gameArea.html(App.$templateNewGame);
         //IO.socket.emit('playerCreateNewGame');
     },
 
@@ -81,7 +81,7 @@ Player = {
         //console.log('Clicked "Join A Game"');
 
         // Display the Join Game HTML on the player's screen.
-        Game.$gameArea.html(Game.$templateJoinGame);
+        App.$gameArea.html(App.$templateJoinGame);
     },
 
     /**
@@ -104,7 +104,7 @@ Player = {
         //App.myRole = 'Player';
         Player.myName = data.playerName;
 
-        Game.$gameArea.html(Game.$templateWaitGame);
+        App.$gameArea.html(App.$templateWaitGame);
     },
 
 
@@ -130,7 +130,7 @@ Player = {
         Player.hp = data.hp;
         Player.mana = data.mana;
 
-        Game.$gameArea.html(Game.$templateWaitGame);
+        App.$gameArea.html(App.$templateWaitGame);
     },
 
 

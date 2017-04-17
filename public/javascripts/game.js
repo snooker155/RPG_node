@@ -68,11 +68,6 @@ Game = {
      * Create some click handlers for the various buttons that appear on-screen.
      */
     bindEvents: function () {
-        // Player
-        Game.$doc.on('click', '#btnCreateGame', Player.onCreateClick);
-        Game.$doc.on('click', '#btnCreate', Player.onCreateGameClick);
-        Game.$doc.on('click', '#btnJoinGame', Player.onJoinClick);
-        Game.$doc.on('click', '#btnStart', Player.onPlayerStartClick);
 
         // Keyboard
         Game.$doc.on('keypress',function (event){
