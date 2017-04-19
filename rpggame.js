@@ -16,7 +16,7 @@ exports.initGame = function(sio, socket){
     gameSocket = socket;
     app = {
         gameId: 0,
-        players: [],
+        players: {},
     };
 
     gameSocket.emit('connected', { message: "You are connected!" });
@@ -48,11 +48,19 @@ function playerCreateNewGame(data) {
     var thisGameId = ( Math.random() * 100000 ) | 0;
 
     // Return the Room ID (gameId) and the socket ID (mySocketId) to the browser client
-    data.gameId = thisGameId;
-    data.mySocketId = this.id;
-    app.players.push(data);
     app.gameId = thisGameId;
     app.mySocketId = this.id;
+    app.players[this.id] = {
+      gameId: thisGameId,
+      mySocketId: this.id,
+      playerName: data.playerName,
+      totalHp: 1000,
+      hp: 1000,
+      totalMana: 100,
+      mana: 100,
+      summon: [],
+      buffs: [],
+    };
     this.emit('newGameCreated', app);
     //console.log(thisGameId+" # "+this.id);
 
@@ -67,10 +75,7 @@ function playerCreateNewGame(data) {
  */
 function prepareGame(gameId) {
     var sock = this;
-    var data = {
-        mySocketId : sock.id,
-        gameId : gameId
-    };
+    var data = app
     //console.log("All Players Present. Preparing game...");
     io.sockets.in(data.gameId).emit('beginNewGame', data);
 }
@@ -81,7 +86,7 @@ function prepareGame(gameId) {
  */
 function startGame(gameId) {
     console.log('Game Started.');
-    sendGameData(gameId);
+    sendNewGameData(gameId);
 };
 
 
@@ -205,8 +210,18 @@ function playerCastComboSpell(comboSpell) {
  * @param wordPoolIndex
  * @param gameId The room identifier
  */
-function sendGameData(gameId) {
+function sendNewGameData(gameId) {
     io.sockets.in(gameId).emit('newGameData', app);
+}
+
+/**
+ * Get a word for the host, and a list of words for the player.
+ *
+ * @param wordPoolIndex
+ * @param gameId The room identifier
+ */
+function sendGameData(gameId) {
+    io.sockets.in(gameId).emit('gameData', app);
 }
 
 /**

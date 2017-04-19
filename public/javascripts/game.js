@@ -8,13 +8,6 @@ Game = {
     gameId: 0,
 
     /**
-     * The Socket.IO socket object identifier. This is unique for
-     * each player and host. It is generated when the browser initially
-     * connects to the server when the page loads for the first time.
-     */
-    mySocketId: '',
-
-    /**
      * Contains references to player data
      */
     players : [],
@@ -45,9 +38,10 @@ Game = {
      * This runs when the page initially loads.
      */
     init: function () {
-        Game.cacheElements();
+        Game.cacheTemplates();
         Game.bindEvents();
         Game.showInitScreen();
+        Game.cacheElements();
 
         // Initialize the fastclick library
         FastClick.attach(document.body);
@@ -56,7 +50,7 @@ Game = {
     /**
      * Create references to on-screen elements used throughout the game.
      */
-    cacheElements: function () {
+    cacheTemplates: function () {
         Game.$doc = $(document);
 
         // Templates
@@ -120,6 +114,19 @@ Game = {
     },
 
 
+    cacheElements: function(){
+        //  Player
+        Game.$playerHp = $('#playerhpbar');
+        Game.$playerMana = $('#playermanabar');
+        Game.$playerName = $('#player_name');
+
+        //  Opponent
+        Game.$oppHp = $('#opponenthpbar');
+        Game.$oppMana = $('#opponentmanabar');
+        Game.$oppName = $('#opponent_name');
+    },
+
+
     /* *************************************
      *             Game Logic              *
      * *********************************** */
@@ -129,26 +136,21 @@ Game = {
      * Show the word for the current round on screen.
      * @param data{{round: *, word: *, answer: *, list: Array}}
      */
-    newGameData : function(data) {
-        // Insert the new word into the DOM
-        var self = this;
+    gameData : function(data) {
         console.log(data);
-        Game.$gameArea.html(Game.$game);
-        Game.$playerHp = $('#playerhpbar');
-        Game.$playerMana = $('#playermanabar');
-        Game.$oppHp = $('#opponenthpbar');
-        Game.$oppMana = $('#opponentmanabar');
-        // App.$playerHp.text("123");
-        data.players.forEach(function(player){
-          if(player.mySocketId == Game.mySocketId){
-            console.log(Game.$playerHp.text());
-            Game.$playerHp.text(player.hp+" / "+player.totalHp);
-            Game.$playerMana.text(player.mana);
-          }else{
-            Game.$oppHp.text(player.hp);
-            Game.$oppMana.text(player.mana);
-          }
-        })
+        Game.drawPlayerData(data);
+
+    },
+
+    /**
+     * Show the word for the current round on screen.
+     * @param data{{round: *, word: *, answer: *, list: Array}}
+     */
+    drawPlayerData : function(data) {
+        // Insert the new word into the DOM
+        Game.$playerHp.text(data.players[App.mySocketId].hp+" / "+data.players[App.mySocketId].totalHp);
+        Game.$playerMana.text(data.players[App.mySocketId].mana+" / "+data.players[App.mySocketId].totalMana);
+        Game.$playerName.text(data.players[App.mySocketId].playerName);
     },
 
     /**

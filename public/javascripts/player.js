@@ -93,8 +93,6 @@ Player = {
         //collect data to send to the server
         var data = {
             playerName : $('#inputPlayerName').val() || 'anon',
-            hp: 2000,
-            mana: 1000,
         };
 
         // Send the gameId and playerName to the server
@@ -127,8 +125,6 @@ Player = {
         // Set the appropriate properties for the current player.
         //App.myRole = 'Player';
         Player.myName = data.playerName;
-        Player.hp = data.hp;
-        Player.mana = data.mana;
 
         App.$gameArea.html(App.$templateWaitGame);
     },

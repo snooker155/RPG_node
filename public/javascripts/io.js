@@ -89,11 +89,11 @@ IO = {
      */
     onNewGameData : function(data) {
         // Update the current round
-        Game.init;
+        Game.init();
         Game.gameState = data;
 
         // Change the word for the Host and Player
-        Game.newGameData(data);
+        Game.gameData(data);
     },
 
     onOpponentCombo: function(data){
