@@ -3,7 +3,7 @@
  */
 var io;
 var gameSocket;
-var app;
+var game;
 
 /**
  * This function is called by index.js to initialize a new game instance.
@@ -14,7 +14,7 @@ var app;
 exports.initGame = function(sio, socket){
     io = sio;
     gameSocket = socket;
-    app = {
+    game = {
         gameId: 0,
         players: {},
     };
@@ -22,13 +22,14 @@ exports.initGame = function(sio, socket){
     gameSocket.emit('connected', { message: "You are connected!" });
 
     // Base Events
-    gameSocket.on('playerCreateNewGame', playerCreateNewGame);
     gameSocket.on('roomFull', prepareGame);
     gameSocket.on('hostCountdownFinished', startGame);
 
+    // App events
+    gameSocket.on('playerCreateNewGame', playerCreateNewGame);
+    gameSocket.on('playerJoinGame', playerJoinGame);
 
     // Player Events
-    gameSocket.on('playerJoinGame', playerJoinGame);
     gameSocket.on('playerCastSpell', playerCastSpell);
     gameSocket.on('playerCastComboSpell', playerCastComboSpell);
 
@@ -48,9 +49,9 @@ function playerCreateNewGame(data) {
     var thisGameId = ( Math.random() * 100000 ) | 0;
 
     // Return the Room ID (gameId) and the socket ID (mySocketId) to the browser client
-    app.gameId = thisGameId;
-    app.mySocketId = this.id;
-    app.players[this.id] = {
+    game.gameId = thisGameId;
+    game.mySocketId = this.id;
+    game.players[this.id] = {
       gameId: thisGameId,
       mySocketId: this.id,
       playerName: data.playerName,
@@ -58,10 +59,21 @@ function playerCreateNewGame(data) {
       hp: 1000,
       totalMana: 100,
       mana: 100,
-      summon: [],
+      summons: [],
       buffs: [],
     };
-    this.emit('newGameCreated', app);
+    game.players[1] = {
+      gameId: thisGameId,
+      mySocketId: 1,
+      playerName: 'Test Bot',
+      totalHp: 1000,
+      hp: 1000,
+      totalMana: 100,
+      mana: 100,
+      summons: [],
+      buffs: [],
+    };
+    this.emit('newGameCreated', game);
     //console.log(thisGameId+" # "+this.id);
 
     // Join the Room and wait for the players
@@ -75,9 +87,8 @@ function playerCreateNewGame(data) {
  */
 function prepareGame(gameId) {
     var sock = this;
-    var data = app
     //console.log("All Players Present. Preparing game...");
-    io.sockets.in(data.gameId).emit('beginNewGame', data);
+    io.sockets.in(gameId).emit('beginNewGame', game);
 }
 
 /*
@@ -86,7 +97,7 @@ function prepareGame(gameId) {
  */
 function startGame(gameId) {
     console.log('Game Started.');
-    sendNewGameData(gameId);
+    io.sockets.in(gameId).emit('newGameData', game);
 };
 
 
@@ -118,15 +129,25 @@ function playerJoinGame(data) {
 
         // Join the room
         sock.join(data.gameId);
-        app.players.push(data);
-        app.mySocketId = sock.id;
+        game.mySocketId = sock.id;
+        game.players[this.id] = {
+          gameId: data.gameId,
+          mySocketId: this.id,
+          playerName: data.playerName,
+          totalHp: 1000,
+          hp: 1000,
+          totalMana: 100,
+          mana: 100,
+          summons: [],
+          buffs: [],
+        };
 
 
         //console.log(gameSocket.adapter.rooms);
         //console.log('Player ' + data.playerName + ' joining game: ' + data.gameId );
 
         // Emit an event notifying the clients that the player has joined the room.
-        io.sockets.in(data.gameId).emit('playerJoinedRoom', app);
+        io.sockets.in(data.gameId).emit('playerJoinedRoom', game);
 
     } else {
         // Otherwise, send an error message back to the player.
@@ -141,16 +162,18 @@ function playerCastSpell(combo) {
     var playerCombo = combo.map(function(n){
         return n.spell;
     });
+    io.sockets.sockets[self.id].emit('opponentCombo', combo);
     if(playerCombo != ""){
-      app.players.forEach(function(player){
-          if(player.mySocketId == self.id){
-              console.log(playerCombo);
-              player.combo = playerCombo;
+      // game.players.forEach(function(player){
+      //     if(player.mySocketId == self.id){
+      //         console.log(playerCombo);
+      //         player.combo = playerCombo;
+      //         //io.sockets.sockets[player.mySocketId].emit('opponentCombo', combo);
+      //     }else{
               //io.sockets.sockets[player.mySocketId].emit('opponentCombo', combo);
-          }else{
-              io.sockets.sockets[player.mySocketId].emit('opponentCombo', combo);
-          }
-      });
+              //io.sockets.sockets[self.id].emit('opponentCombo', combo);
+      //     }
+      // });
 
       var comboSpell = findSpell(playerCombo);
       console.log(comboSpell);
@@ -163,7 +186,7 @@ function playerCastSpell(combo) {
 function playerCastComboSpell(comboSpell) {
     var self = this;
     console.log(comboSpell);
-    console.log(app.players);
+    console.log(game.players);
 
     switch (comboSpell.type) {
       case 'target':
@@ -204,15 +227,6 @@ function playerCastComboSpell(comboSpell) {
  *                       *
  ************************* */
 
-/**
- * Get a word for the host, and a list of words for the player.
- *
- * @param wordPoolIndex
- * @param gameId The room identifier
- */
-function sendNewGameData(gameId) {
-    io.sockets.in(gameId).emit('newGameData', app);
-}
 
 /**
  * Get a word for the host, and a list of words for the player.
@@ -221,19 +235,9 @@ function sendNewGameData(gameId) {
  * @param gameId The room identifier
  */
 function sendGameData(gameId) {
-    io.sockets.in(gameId).emit('gameData', app);
+    io.sockets.in(gameId).emit('gameData', game);
 }
 
-/**
- * Get a word for the host, and a list of words for the player.
- *
- * @param wordPoolIndex
- * @param gameId The room identifier
- */
-function updateOppHp(gameId, player) {
-  console.log(player);
-    io.sockets.in(gameId).emit('updateOppData', player);
-}
 
 /**
  * Get a word for the host, and a list of words for the player.
@@ -243,7 +247,7 @@ function updateOppHp(gameId, player) {
  */
 function findSpell(combo) {
     combo = combo.sort().join("");
-    console.log(combo);
+    // console.log(combo);
     var comboSpell = spells[combo];
     return comboSpell;
 }
@@ -255,12 +259,9 @@ function findSpell(combo) {
  * @param gameId The room identifier
  */
 function makeDamage(comboSpell){
-  app.players.forEach(function(player){
-    if(player.mySocketId == comboSpell.target.mySocketId){
-      player.hp -= comboSpell.value;
-      updateOppHp(comboSpell.target.gameId, player);
-    }
-  });
+  game.players[comboSpell.target].hp -= comboSpell.value;
+  console.log(game.players);
+  sendGameData(comboSpell.gameId);
 }
 
 /**

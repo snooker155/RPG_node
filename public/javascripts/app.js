@@ -15,6 +15,13 @@ App = {
     mySocketId: '',
 
     /**
+     * The Socket.IO socket object identifier. This is unique for
+     * each player and host. It is generated when the browser initially
+     * connects to the server when the page loads for the first time.
+     */
+    oppSocketId: 1,
+
+    /**
      * Contains references to player data
      */
     players : [],
@@ -117,18 +124,18 @@ App = {
 
         // Add players to the screen
         $('#playersWaiting')
-            .append('<p>Player ' + data.playerName + ' joined the game.</p>');
+            .append('<p>Player ' + data.players[App.mySocketId].playerName + ' joined the game.</p>');
 
         // Store the new player's data on the Host.
         App.players = data.players;
 
         // Increment the number of players in the room
-        App.numPlayersInRoom += 1;
+        App.numPlayersInRoom = Object.keys(data.players).length;
 
-        console.log(App);
+        // console.log(App);
 
         // If two players have joined, start the game!
-        if (App.numPlayersInRoom === 1) {
+        if (App.numPlayersInRoom === 2) {
             //console.log('Room is full. Almost ready!');
 
             // Let the server know that two players are present.
@@ -147,23 +154,29 @@ App = {
         }
         // Update host screen
         $('#playersWaiting')
-            .append('<p>Player ' + data.playerName + ' joined the game.</p>');
+            .append('<p>Player ' + data.players[App.mySocketId].playerName + ' joined the game.</p>');
 
         // Store the new player's data on the Host.
         App.players = data.players;
         App.gameId = data.gameId;
 
+        for(var player in App.players){
+          if(player != App.mySocketId){
+            App.oppSocketId = player;
+          }
+        }
+
         // Increment the number of players in the room
-        App.numPlayersInRoom += 1;
+        App.numPlayersInRoom = Object.keys(data.players).length;
 
         console.log(App);
 
         // If two players have joined, start the game!
-        if (App.numPlayersInRoom === 1) {
+        if (App.numPlayersInRoom === 2) {
             //console.log('Room is full. Almost ready!');
 
             // Let the server know that two players are present.
-            IO.socket.emit('roomFull',App.gameId);
+            //IO.socket.emit('roomFull',App.gameId);
         }
     },
 
@@ -178,7 +191,7 @@ App = {
 
         // Begin the on-screen countdown timer
         var $secondsLeft = $('#hostWord');
-        App.countDown( $secondsLeft, 5, function(){
+        App.countDown( $secondsLeft, 1, function(){
             IO.socket.emit('hostCountdownFinished', App.gameId);
         });
     },

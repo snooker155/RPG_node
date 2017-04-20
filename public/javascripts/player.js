@@ -25,11 +25,6 @@ Player = {
     comboSpell: {},
 
     /**
-     * The player's previous combo spell.
-     */
-    previousComboSpell: {},
-
-    /**
      * The player's target.
      */
     target: {},
@@ -136,8 +131,8 @@ Player = {
      * *********************************** */
 
     putInCombo: function() {
-        console.log($(this).attr('data-spell'));
-        console.log($(this).attr('data-class'));
+        // console.log($(this).attr('data-spell'));
+        // console.log($(this).attr('data-class'));
         var spell = $(this).attr('data-spell');
         var spell_class = $(this).attr('data-class');
 
@@ -153,10 +148,10 @@ Player = {
 
                 // console.log(App.Player.combo);
 
-                if(Player.previousComboSpell.spell_name) {
-                    $("#spell_to_cast").removeClass(Player.previousComboSpell.icon_class);
-                    Game.resetSpellText();
-                }
+                // if(Player.previousComboSpell.spell_name) {
+                //     $("#spell_to_cast").removeClass(Player.previousComboSpell.icon_class);
+                //     Game.resetSpellText();
+                // }
 
                 break;
             }
@@ -184,10 +179,10 @@ Player = {
 
                 // console.log(App.Player.previousComboSpell);
 
-                if(Player.previousComboSpell.spell_name) {
-                    $("#spell_to_cast").removeClass(Player.previousComboSpell.icon_class);
-                    Game.resetSpellText();
-                }
+                // if(Player.previousComboSpell.spell_name) {
+                //     $("#spell_to_cast").removeClass(Player.previousComboSpell.icon_class);
+                //     Game.resetSpellText();
+                // }
 
                 //console.log(App.Player.combo);
 
@@ -200,20 +195,22 @@ Player = {
     },
 
     castSpell: function(){
-        console.log('cast combo spell');
-        console.log(Player.previousComboSpell);
-        Player.previousComboSpell.target = Game.players[0];
-        IO.socket.emit('playerCastComboSpell', Player.previousComboSpell);
+        Player.comboSpell.target = App.oppSocketId;
+        Player.comboSpell.gameId = App.gameId;
+        // console.log('cast combo spell');
+        // console.log(Player.comboSpell);
+        if(Player.comboSpell){
+          IO.socket.emit('playerCastComboSpell', Player.comboSpell);
+        }
     },
 
     resetSpell: function(){
       if(Player.combo[0])$("#0_spell").removeClass(Player.combo[0].icon_class);
       if(Player.combo[1])$("#1_spell").removeClass(Player.combo[1].icon_class);
       // if(combo[2])$("#2_spell").removeClass(combo[2].icon_class);
-      $("#spell_to_cast").removeClass(Player.previousComboSpell.icon_class);
-      Game.resetSpellText();
+      Game.resetSpell();
       Player.combo = [];
-      Player.comboSpell = {};
+      Player.comboSpell = null;
       IO.socket.emit('playerCastSpell', Player.combo);
     }
 

@@ -30,7 +30,7 @@ IO = {
         IO.socket.on('newGameData', IO.onNewGameData);
         IO.socket.on('opponentCombo', IO.onOpponentCombo);
         IO.socket.on('comboSpell', IO.onComboSpell);
-        IO.socket.on('updateOppHp', IO.onUpdateOppHp);
+        IO.socket.on('gameData', IO.onGameData);
     },
 
 
@@ -44,7 +44,7 @@ IO = {
     onConnected : function(data) {
         // Cache a copy of the client's socket.IO session ID on the App
         App.mySocketId = IO.socket.id;
-        // console.log(data.message);
+        // console.log(App);
     },
 
     /**
@@ -53,6 +53,7 @@ IO = {
      */
     onNewGameCreated : function(data) {
         App.appInit(data);
+        // console.log(App);
     },
 
     /**
@@ -74,7 +75,7 @@ IO = {
      * @param data
      */
     beginNewGame : function(data) {
-        App.gameCountdown(data);
+        App.gameCountdown();
     },
 
 
@@ -91,21 +92,23 @@ IO = {
         // Update the current round
         Game.init();
         Game.gameState = data;
+        // console.log(Game.gameState);
 
         // Change the word for the Host and Player
         Game.gameData(data);
     },
 
     onOpponentCombo: function(data){
-        console.log(data);
+        // console.log(data);
+        Game.drawOppCombo(data);
     },
 
     onComboSpell: function(data){
         Game.drawComboSpell(data);
     },
 
-    onUpdateOppHp: function(data){
-        Game.drawOppHp(data);
+    onGameData: function(data){
+        Game.gameData(data);
     }
 
 };
