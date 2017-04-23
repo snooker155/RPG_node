@@ -90,18 +90,15 @@
                 <div class="col-md-3">
                     <div class="opponent">
                         <div class="opponent_statusbar">
-                            <div class="" id="totalopponenthpbar"><div  id="opponenthpbar">200 / 200</div></div>
-                            <div class="" id="totalopponentmanabar"><div  id="opponentmanabar">100 / 100</div></div>
-                            <div class="opponent_buffs" id="opponent_buffs">
-                                <div class="buffslot burn">
-                                </div>
-                                <div class="buffslot pain">
-                                </div>
-                                <div class="buffslot haste">
-                                </div>
-                                <div class="buffslot heal">
-                                </div>
+                            <div class="hpbar">
+                              <span id="opponenthpbar" style="width: 100%;"></span>
+                              <span id="opponenthp">200 / 200</span>
                             </div>
+                            <div class="manabar">
+                              <span id="opponentmanabar" style="width: 100%;"></span>
+                              <span id="opponentmana">200 / 200</span>
+                            </div>
+                            <div class="opponent_buffs" id="opponent_buffs"></div>
                         </div>
                         <div class="opponent_img">
                             <img class="mobsprites boss3 selected">
@@ -116,9 +113,9 @@
                             <div class="slot">
                                 <img class="spellsprite" id="opp_spell_2"></img>
                             </div>
-                            <div class="slot">
+                            <!-- <div class="slot">
                                 <img class="spellsprite" id="opp_spell_3"></img>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -226,8 +223,14 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="player">
-                        <div class="" id="totalplayerhpbar"><div id="playerhpbar">123</div></div>
-                        <div class="" id="totalplayermanabar"><div id="playermanabar"></div></div>
+                        <div class="hpbar">
+                          <span id="playerhpbar" style="width: 100%;"></span>
+                          <span id="playerhp">200 / 200</span>
+                        </div>
+                        <div class="manabar">
+                          <span id="playermanabar" style="width: 100%;"></span>
+                          <span id="playermana">200 / 200</span>
+                        </div>
                         <div class="player_buffs" id="player_buffs"></div>
                         <div class="player_img">
                             <img class="mobsprites boss1">
@@ -261,6 +264,7 @@
                             <div class="spell_combo_info">
                                 <p id="spell_name"></p>
                                 <p id="spell_type"></p>
+                                <p id="spell_school"></p>
                                 <p id="spell_damage"></p>
                                 <p id="spell_manacost"></p>
                             </div>

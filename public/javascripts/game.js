@@ -66,14 +66,14 @@ Game = {
         // Keyboard
         Game.$doc.on('keypress',function (event){
             // console.log(event.keyCode);
-            if (event.keyCode === 113){$("#spell1").trigger('click'); $("#spell1").addClass('down');}
-            if (event.keyCode === 119){$("#spell2").trigger('click'); $("#spell2").addClass('down');}
-            if (event.keyCode === 101){$("#spell3").trigger('click'); $("#spell3").addClass('down');}
-            if (event.keyCode === 114){$("#spell4").trigger('click'); $("#spell4").addClass('down');}
-            if (event.keyCode === 97){$("#spell5").trigger('click'); $("#spell5").addClass('down');}
-            if (event.keyCode === 115){$("#spell6").trigger('click'); $("#spell6").addClass('down');}
-            if (event.keyCode === 100){$("#spell7").trigger('click'); $("#spell7").addClass('down');}
-            if (event.keyCode === 102){$("#spell8").trigger('click'); $("#spell8").addClass('down');}
+            if (event.keyCode === 113 && !$("#spell1").hasClass('cooldown')){$("#spell1").trigger('click'); $("#spell1").addClass('down');}
+            if (event.keyCode === 119 && !$("#spell2").hasClass('cooldown')){$("#spell2").trigger('click'); $("#spell2").addClass('down');}
+            if (event.keyCode === 101 && !$("#spell3").hasClass('cooldown')){$("#spell3").trigger('click'); $("#spell3").addClass('down');}
+            if (event.keyCode === 114 && !$("#spell4").hasClass('cooldown')){$("#spell4").trigger('click'); $("#spell4").addClass('down');}
+            if (event.keyCode === 97 && !$("#spell5").hasClass('cooldown')){$("#spell5").trigger('click'); $("#spell5").addClass('down');}
+            if (event.keyCode === 115 && !$("#spell6").hasClass('cooldown')){$("#spell6").trigger('click'); $("#spell6").addClass('down');}
+            if (event.keyCode === 100 && !$("#spell7").hasClass('cooldown')){$("#spell7").trigger('click'); $("#spell7").addClass('down');}
+            if (event.keyCode === 102 && !$("#spell8").hasClass('cooldown')){$("#spell8").trigger('click'); $("#spell8").addClass('down');}
 
             if (event.keyCode === 32){$("#spell_to_cast").trigger('click');}
 
@@ -116,8 +116,10 @@ Game = {
 
     cacheElements: function(){
         //  Player
-        Game.$playerHp = $('#playerhpbar');
-        Game.$playerMana = $('#playermanabar');
+        Game.$playerHp = $('#playerhp');
+        Game.$playerHpBar = $('#playerhpbar');
+        Game.$playerMana = $('#playermana');
+        Game.$playerManaBar = $('#playermanabar');
         Game.$playerName = $('#player_name');
 
         Game.$playerBuffs = $('#player_buffs');
@@ -130,12 +132,15 @@ Game = {
         Game.$comboSpell = $("#spell_to_cast");
         Game.$comboSpellName = $("#spell_name");
         Game.$comboSpellType = $("#spell_type");
+        Game.$comboSpellSchool = $("#spell_school");
         Game.$comboSpellDamage = $("#spell_damage");
         Game.$comboSpellManacost = $("#spell_manacost");
 
         //  Opponent
-        Game.$oppHp = $('#opponenthpbar');
-        Game.$oppMana = $('#opponentmanabar');
+        Game.$oppHp = $('#opponenthp');
+        Game.$oppHpBar = $('#opponenthpbar');
+        Game.$oppMana = $('#opponentmana');
+        Game.$oppManaBar = $('#opponentmanabar');
         Game.$oppName = $('#opponent_name');
 
         Game.$opponentBuffs = $('#opponent_buffs');
@@ -162,11 +167,11 @@ Game = {
      */
     gameData : function(data) {
         console.log(data);
+        Game.drawBaseSpells(data);
         Game.drawPlayerData(data);
         Game.drawOppData(data);
         Game.drawBuffs(data);
         Game.drawSummons(data);
-        Game.setLog(data);
     },
 
     /**
@@ -174,8 +179,24 @@ Game = {
      * @param data{{round: *, word: *, answer: *, list: Array}}
      */
     setLog : function(data) {
-      Game.$opponentLog.append("Test log</br>");
-      Game.$infoLog.append("Test log</br>");
+      Game.$opponentLog.prepend("</br>");
+      Game.$infoLog.prepend("</br>");
+    },
+
+    /**
+     * Show the word for the current round on screen.
+     * @param data{{round: *, word: *, answer: *, list: Array}}
+     */
+    drawBaseSpells : function(data) {
+        // Insert the new word into the DOM
+        console.log(data);
+        for( var spell in data.players[App.mySocketId].baseCooldowns){
+          if(data.players[App.mySocketId].baseCooldowns[spell].onCooldown){
+            $("#spell"+spell).addClass('cooldown');
+          }else{
+            $("#spell"+spell).removeClass('cooldown');
+          }
+        }
     },
 
     /**
@@ -185,7 +206,9 @@ Game = {
     drawPlayerData : function(data) {
         // Insert the new word into the DOM
         Game.$playerHp.text(data.players[App.mySocketId].hp+" / "+data.players[App.mySocketId].totalHp);
+        Game.$playerHpBar.css('width', data.players[App.mySocketId].hp / data.players[App.mySocketId].totalHp * 100+"%");
         Game.$playerMana.text(data.players[App.mySocketId].mana+" / "+data.players[App.mySocketId].totalMana);
+        Game.$playerManaBar.css('width', data.players[App.mySocketId].mana / data.players[App.mySocketId].totalMana * 100+"%");
         Game.$playerName.text(data.players[App.mySocketId].playerName);
     },
 
@@ -197,7 +220,9 @@ Game = {
         // Insert the new word into the DOM
         if(App.oppSocketId != ""){
           Game.$oppHp.text(data.players[App.oppSocketId].hp+" / "+data.players[App.oppSocketId].totalHp);
+          Game.$oppHpBar.css('width', data.players[App.oppSocketId].hp / data.players[App.oppSocketId].totalHp * 100+"%");
           Game.$oppMana.text(data.players[App.oppSocketId].mana+" / "+data.players[App.oppSocketId].totalMana);
+          Game.$oppManaBar.css('width', data.players[App.oppSocketId].mana / data.players[App.oppSocketId].totalMana * 100+"%");
           Game.$oppName.text(data.players[App.oppSocketId].playerName);
         }
     },
@@ -210,14 +235,14 @@ Game = {
         if(data.players[App.mySocketId].buffs.length != 0){
           Game.$playerBuffs.html("");
           data.players[App.mySocketId].buffs.forEach(function(buff){
-            Game.$playerBuffs.append("<div class=\"buffslot "+buff.type+"\"></div>")
+            Game.$playerBuffs.append("<div class=\"buffslot "+buff.type+"\">"+buff.value+"</div>")
           });
         }
 
         if(App.oppSocketId != "" && data.players[App.oppSocketId].buffs.length != 0){
           Game.$opponentBuffs.html("");
           data.players[App.oppSocketId].buffs.forEach(function(buff){
-            Game.$opponentBuffs.append("<div class=\"buffslot "+buff.type+"\"></div>")
+            Game.$opponentBuffs.append("<div class=\"buffslot "+buff.type+"\">"+buff.value+"</div>")
           });
         }
     },
@@ -267,7 +292,8 @@ Game = {
     resetSpell : function () {
       Game.$comboSpell.attr('class', 'spellsprite');
       Game.$comboSpellName.text("");
-      Game.$comboSpellType.text("").attr('class', '');
+      Game.$comboSpellType.text("");
+      Game.$comboSpellSchool.text("").attr('class', '');
       Game.$comboSpellDamage.text("");
       Game.$comboSpellManacost.text("");
     },
@@ -277,11 +303,16 @@ Game = {
      * @param data{{round: *, word: *, answer: *, list: Array}}
      */
     drawComboSpell : function(data){
-      // console.log(data);
+      console.log(data);
       Player.comboSpell = data;
-      Game.$comboSpell.attr('class', 'spellsprite '+data.icon_class);
+      if(data.onCooldown){
+        Game.$comboSpell.attr('class', 'spellsprite '+data.icon_class+' cooldown');
+      }else{
+        Game.$comboSpell.attr('class', 'spellsprite '+data.icon_class);
+      }
       Game.$comboSpellName.text("Name: "+data.spell_name);
-      Game.$comboSpellType.text("Type: "+data.type).attr('class', data.type);
+      Game.$comboSpellType.text("Type: "+data.type);
+      Game.$comboSpellSchool.text("School: "+data.school).attr('class', data.school);
       Game.$comboSpellDamage.text("Damage: "+data.value);
       Game.$comboSpellManacost.text("Manacost: "+data.manacost);
     },

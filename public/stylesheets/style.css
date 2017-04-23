@@ -384,7 +384,7 @@ p {
 .log{
   width: 100%;
   border:5px solid #444;
-  overflow-y:none;
+  overflow-y:auto;
   color: white;
   /*background-color: #24303E;*/
 }
@@ -406,31 +406,40 @@ p {
 }
 
 
-#playermanabar {
-  width: 100%;
-  height: 20px;
-  background: url("http://res.cloudinary.com/treborx555/image/upload/v1472309979/dblue168_zjpw0l.jpg");
-  background-size:150px;
-  /*border:5px solid #333;*/
-  top:0;
+.hpbar > #playerhp {
+  height: 100%;
   text-align: center;
   color: white;
+  position: absolute;
+  left: 42%;
 }
 
-#playerhpbar {
-  width: 100%;
-  height: 20px;
+.hpbar > #playerhpbar {
+  float: left;
+  height: 100%;
   background: url("http://res.cloudinary.com/treborx555/image/upload/v1472309979/red_ukpo3h.jpg");
   background-size:150px;
-  /*border:5px solid #333;*/
+}
+
+.manabar > #playermana {
+  height: 100%;
   text-align: center;
   color: white;
+  position: absolute;
+  left: 42%;
+}
+
+.manabar > #playermanabar {
+  float: left;
+  height: 100%;
+  background: url("http://res.cloudinary.com/treborx555/image/upload/v1472309979/dblue168_zjpw0l.jpg");
+  background-size:150px;
 }
 
 .slot {
   border: 1px solid #BF942C;
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   background-color: #8F5D38;
   background: url("http://res.cloudinary.com/treborx555/image/upload/v1472064620/gui_xyicsn.png");
   background-size: 60px;
@@ -564,50 +573,79 @@ p {
   float: left;
 }
 
+
+
+
+
 .burn {
   background-color: orange;
+  color: white;
 }
 
 .haste {
   background-color: red;
+  color: white;
 }
 
 .pain {
   background-color: purple;
+  color: white;
 }
 
 .heal {
   background-color: green;
+  color: white;
 }
 
-#totalopponenthpbar {
+.block {
+  background-color: silver;
+  color: white;
+}
+
+
+
+
+
+.hpbar {
   background-color: #24303E;
-}
-
-#totalopponentmanabar {
-  background-color: #24303E;
-}
-
-
-#opponentmanabar {
-  width: 100%;
   height: 20px;
+  width: 100%;
+}
+
+.manabar {
+  background-color: #24303E;
+  height: 20px;
+  width: 100%;
+}
+
+.manabar > #opponentmana {
+  height: 100%;
+  text-align: center;
+  color: white;
+  position: absolute;
+  left: 42%;
+}
+
+.manabar > #opponentmanabar {
+  float: left;
+  height: 100%;
   background: url("http://res.cloudinary.com/treborx555/image/upload/v1472309979/dblue168_zjpw0l.jpg");
   background-size:150px;
-  /*border:5px solid #333;*/
-  top:0;
-  text-align: center;
-  color: white;
 }
 
-#opponenthpbar {
-  width: 100%;
-  height: 20px;
-  background: url("http://res.cloudinary.com/treborx555/image/upload/v1472309979/red_ukpo3h.jpg");
-  background-size:150px;
-  /*border:5px solid #333;*/
+.hpbar > #opponenthp {
+  height: 100%;
   text-align: center;
   color: white;
+  position: absolute;
+  left: 42%;
+}
+
+.hpbar > #opponenthpbar {
+  float: left;
+  height: 100%;
+  background: url("http://res.cloudinary.com/treborx555/image/upload/v1472309979/red_ukpo3h.jpg");
+  background-size:150px;
 }
 
 .player{
@@ -722,7 +760,6 @@ p {
 .fire{
   color:orange;
 }
-
 .blood{
   color:red;
 }
@@ -738,11 +775,6 @@ p {
 .dodge{
   color:gray;
 }
-
-.fire{
-  color:orange;
-}
-
 .shadow{
   color:purple;
 }

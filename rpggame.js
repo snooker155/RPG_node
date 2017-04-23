@@ -61,6 +61,8 @@ function playerCreateNewGame(data) {
       mana: 100,
       summons: [],
       buffs: [],
+      cooldowns: {},
+      baseCooldowns: {},
     };
     game.players[1] = {
       gameId: thisGameId,
@@ -72,6 +74,8 @@ function playerCreateNewGame(data) {
       mana: 100,
       summons: [],
       buffs: [],
+      cooldowns: {},
+      baseCooldowns: {},
     };
     this.emit('newGameCreated', game);
     //console.log(thisGameId+" # "+this.id);
@@ -140,6 +144,8 @@ function playerJoinGame(data) {
           mana: 100,
           summons: [],
           buffs: [],
+          cooldowns: {},
+          baseCooldowns: {},
         };
 
 
@@ -176,7 +182,14 @@ function playerCastSpell(combo) {
       // });
 
       var comboSpell = findSpell(playerCombo);
+      comboSpell.combo = combo;
       console.log(comboSpell);
+      console.log(game.players[self.id].cooldowns[comboSpell.spell_name]);
+      if(game.players[self.id].cooldowns[comboSpell.spell_name]){
+        comboSpell.onCooldown = true;
+      }else{
+        comboSpell.onCooldown = false;
+      }
       self.emit('comboSpell', comboSpell);
     }
 
@@ -191,29 +204,38 @@ function playerCastComboSpell(comboSpell) {
     switch (comboSpell.type) {
       case 'target':
         makeDamage(comboSpell);
-        // comboSpell.manaCost();
-        // comboSpell.setCooldown();
+        manaCost(comboSpell);
+        setCooldown(comboSpell);
+        setBaseCooldown(comboSpell);
+        break;
+      case 'aoe':
+        makeAOE(comboSpell);
+        manaCost(comboSpell);
+        setCooldown(comboSpell);
+        setBaseCooldown(comboSpell);
         break;
       // case 'heal':
       //   spell.makeHeal(self.target);
       //   spell.manaCost(self);
       //   spell.setCooldown(self);
       //   break;
-      // case 'buff':
-      //   spell.setBuff(self.target);
-      //   spell.manaCost(self);
-      //   spell.setCooldown(self);
-      //   break;
+      case 'buff':
+        setBuff(comboSpell);
+        manaCost(comboSpell);
+        setCooldown(comboSpell);
+        setBaseCooldown(comboSpell);
+        break;
       // case 'debuff':
       //   spell.setDebuff(self.target);
       //   spell.manaCost(self);
       //   spell.setCooldown(self);
       //   break;
-      // case 'summon':
-      //   spell.setSummon(self.target);
-      //   spell.manaCost(self);
-      //   spell.setCooldown(self);
-      //   break;
+      case 'summon':
+        setSummon(comboSpell);
+        manaCost(comboSpell);
+        setCooldown(comboSpell);
+        setBaseCooldown(comboSpell);
+        break;
       default:
         console.log('Spell type is undefined');
         break;
@@ -239,17 +261,82 @@ function sendGameData(gameId) {
 }
 
 
+function findSpell(combo) {
+    combo = combo.sort().join("");
+    // console.log(combo);
+    var comboSpell = spells[combo];
+    return comboSpell;
+}
+
+
+function makeDamage(comboSpell){
+  game.players[comboSpell.target].hp -= comboSpell.damage;
+  // console.log(game.players);
+  // sendGameData(comboSpell.gameId);
+}
+
+
+function makeAOE(comboSpell){
+  game.players[comboSpell.target].hp -= comboSpell.damage;
+  game.players[comboSpell.target].summons.forEach(function(summon){
+    summon.hp -= comboSpell.value;
+  });
+  // console.log(game.players);
+  // sendGameData(comboSpell.gameId);
+}
+
+
+function setBuff(comboSpell){
+  if(!game.players[comboSpell.player].buffs[0]){
+    game.players[comboSpell.player].buffs[0] = comboSpell.buff;
+  }else if (!game.players[comboSpell.player].buffs[1]) {
+    game.players[comboSpell.player].buffs[1] = comboSpell.buff;
+  }else if (!game.players[comboSpell.player].buffs[2]) {
+    game.players[comboSpell.player].buffs[2] = comboSpell.buff;
+  }else if (!game.players[comboSpell.player].buffs[3]) {
+    game.players[comboSpell.player].buffs[3] = comboSpell.buff;
+  }else{
+    console.log("No places for buffs");
+  }
+  // console.log(game.players);
+  // sendGameData(comboSpell.gameId);
+}
+
+
+function setSummon(comboSpell){
+  if(!game.players[comboSpell.player].summons[0]){
+    game.players[comboSpell.player].summons[0] = comboSpell.summon;
+    game.players[comboSpell.player].summons[0].hp = game.players[comboSpell.player].summons[0].totalHp;
+    game.players[comboSpell.player].summons[0].buffs = [];
+    // setInterval(function(){game.players[comboSpell.target].hp -=  game.players[comboSpell.player].summons[0].attack; console.log(123)}, game.players[comboSpell.player].summons[0].speedAttack);
+  }else if (!game.players[comboSpell.player].summons[1]) {
+    game.players[comboSpell.player].summons[1] = comboSpell.summon;
+    game.players[comboSpell.player].summons[1].hp = game.players[comboSpell.player].summons[1].totalHp;
+    game.players[comboSpell.player].summons[1].buffs = [];
+    // setInterval(function(){game.players[comboSpell.target].hp -=  game.players[comboSpell.player].summons[1].attack;}, game.players[comboSpell.player].summons[1].speedAttack);
+  }else if (!game.players[comboSpell.player].summons[2]) {
+    game.players[comboSpell.player].summons[2] = comboSpell.summon;
+    game.players[comboSpell.player].summons[2].hp = game.players[comboSpell.player].summons[2].totalHp;
+    game.players[comboSpell.player].summons[2].buffs = [];
+    // setInterval(function(){game.players[comboSpell.target].hp -=  game.players[comboSpell.player].summons[2].attack;}, game.players[comboSpell.player].summons[2].speedAttack);
+  }else{
+    console.log("No places!")
+  }
+  // console.log(game.players);
+  // sendGameData(comboSpell.gameId);
+}
+
+
 /**
  * Get a word for the host, and a list of words for the player.
  *
  * @param wordPoolIndex
  * @param gameId The room identifier
  */
-function findSpell(combo) {
-    combo = combo.sort().join("");
-    // console.log(combo);
-    var comboSpell = spells[combo];
-    return comboSpell;
+function manaCost(comboSpell){
+  game.players[comboSpell.player].mana -= comboSpell.manacost;
+  // console.log(game.players);
+  // sendGameData(comboSpell.gameId);
 }
 
 /**
@@ -258,11 +345,67 @@ function findSpell(combo) {
  * @param wordPoolIndex
  * @param gameId The room identifier
  */
-function makeDamage(comboSpell){
-  game.players[comboSpell.target].hp -= comboSpell.value;
+function setCooldown(comboSpell){
+  game.players[comboSpell.player].cooldowns[comboSpell.spell_name] = true;
+  setTimeout(function(){resetCooldown(comboSpell);}, comboSpell.cooldown);
   console.log(game.players);
   sendGameData(comboSpell.gameId);
 }
+
+/**
+ * Get a word for the host, and a list of words for the player.
+ *
+ * @param wordPoolIndex
+ * @param gameId The room identifier
+ */
+function resetCooldown(comboSpell){
+  game.players[comboSpell.player].cooldowns[comboSpell.spell_name] = false;
+  // console.log(game.players);
+}
+
+
+/**
+ * Get a word for the host, and a list of words for the player.
+ *
+ * @param wordPoolIndex
+ * @param gameId The room identifier
+ */
+function setBaseCooldown(comboSpell){
+  comboSpell.combo.forEach(function(baseSpell){
+    var spells = [baseSpell.spell];
+    var baseSpellCooldown = 0;
+    if(game.players[comboSpell.player].baseCooldowns[baseSpell.spell] && game.players[comboSpell.player].baseCooldowns[baseSpell.spell].onCooldown){
+      game.players[comboSpell.player].baseCooldowns[baseSpell.spell].baseSpellCooldown += findSpell(spells).cooldown;
+    }else{
+      game.players[comboSpell.player].baseCooldowns[baseSpell.spell] = {
+        onCooldown: true,
+        baseSpellCooldown: 0,
+      };
+      game.players[comboSpell.player].baseCooldowns[baseSpell.spell].baseSpellCooldown += findSpell(spells).cooldown;
+    }
+  });
+  for( var spell in game.players[comboSpell.player].baseCooldowns){
+    if(game.players[comboSpell.player].baseCooldowns[spell]){
+      setTimeout(resetBaseCooldown.bind(null, comboSpell, spell), game.players[comboSpell.player].baseCooldowns[spell].baseSpellCooldown);
+    }
+  }
+  console.log(game.players);
+  sendGameData(comboSpell.gameId);
+}
+
+/**
+ * Get a word for the host, and a list of words for the player.
+ *
+ * @param wordPoolIndex
+ * @param gameId The room identifier
+ */
+function resetBaseCooldown(comboSpell, spell){
+  console.log(spell);
+  game.players[comboSpell.player].baseCooldowns[spell].onCooldown = false;
+  // console.log(game.players);
+  sendGameData(comboSpell.gameId);
+}
+
 
 /**
  * Each element in the array provides data for a single round in the game.
@@ -279,7 +422,7 @@ var spells = {
         icon_class: 'sprite-Fire',
         spell_name: 'Fireball',
         type: 'target',
-        value: 15,
+        damage: 15,
         school: 'fire',
         manacost: 10,
         healthcost: 0,
@@ -290,7 +433,7 @@ var spells = {
         icon_class: 'sprite-Ice',
         spell_name: 'Icebolt',
         type: 'target',
-        value: 13,
+        damage: 13,
         school: 'ice',
         manacost: 10,
         healthcost: 0,
@@ -301,7 +444,7 @@ var spells = {
         icon_class: 'sprite-Storm',
         spell_name: "Stormbolt",
         type: 'aoe',
-        value: 5,
+        damage: 5,
         school: 'storm',
         manacost: 10,
         healthcost: 0,
@@ -312,7 +455,7 @@ var spells = {
         icon_class: 'sprite-Nature',
         spell_name: 'Wraith of Nature',
         type: 'heal',
-        value: 20,
+        damage: 20,
         school: 'nature',
         manacost: 10,
         healthcost: 0,
@@ -323,7 +466,7 @@ var spells = {
         icon_class: 'sprite-Cabal',
         spell_name: 'Shadowbolt',
         type: 'debuff',
-        value: 10,
+        damage: 10,
         school: 'cabal',
         manacost: 20,
         healthcost: 0,
@@ -334,7 +477,7 @@ var spells = {
         icon_class: 'sprite-Blood',
         spell_name: 'Bloodsteal',
         type: 'target',
-        value: 15,
+        damage: 15,
         school: 'blood',
         manacost: 0,
         healthcost: 10,
@@ -345,7 +488,7 @@ var spells = {
         icon_class: 'sprite-Weapon',
         spell_name: 'Basic attack',
         type: 'target',
-        value: 5,
+        damage: 5,
         school: 'basic',
         manacost: 0,
         healthcost: 0,
@@ -356,7 +499,7 @@ var spells = {
         icon_class: 'sprite-Defence',
         spell_name: 'Defence',
         type: 'buff',
-        value: 0,
+        damage: 0,
         school: 'basic',
         manacost: 0,
         healthcost: 0,
@@ -370,7 +513,7 @@ var spells = {
         icon_class: 'sprite-Fireball',
         spell_name: 'Fireball',
         type: 'target',
-        value: 30,
+        damage: 30,
         school: 'fire',
         manacost: 20,
         healthcost: 0,
@@ -381,8 +524,8 @@ var spells = {
         icon_class: 'sprite-Frostfire',
         spell_name: 'Frost Fire',
         type: 'target',
-        value: 28,
-        school: ['fire', 'frost'],
+        damage: 28,
+        school: 'fire',
         manacost: 20,
         healthcost: 0,
         cooldown: 15000,
@@ -392,7 +535,7 @@ var spells = {
         icon_class: 'sprite-Firerain',
         spell_name: 'Fire Rain',
         type: 'aoe',
-        value: 5,
+        damage: 5,
         school: 'fire',
         manacost: 20,
         healthcost: 0,
@@ -403,19 +546,25 @@ var spells = {
         icon_class: 'sprite-Fire-Elemental',
         spell_name: 'Fire Elemental',
         type: 'summon',
-        value: 0,
+        damage: 0,
         school: 'fire',
         manacost: 25,
         healthcost: 0,
         cooldown: 30000,
+        summon: {
+          icon_class: 'boss10',
+          totalHp: 100,
+          attack: 10,
+          attackSpeed: 5000,
+        },
     },
     15: {
         letter: "FC",
         icon_class: 'sprite-Dark-Flame',
         spell_name: 'Dark Flame',
-        type: ['target', 'debuff'],
-        value: 10,
-        school: ['fire', 'cabal'],
+        type: 'target',
+        damage: 10,
+        school: 'cabal',
         manacost: 30,
         healthcost: 0,
         cooldown: 25000,
@@ -425,11 +574,15 @@ var spells = {
         icon_class: 'sprite-Fireblood',
         spell_name: 'Fire Blood',
         type: 'buff',
-        value: 0,
+        damage: 0,
         school: 'fire',
         manacost: 10,
         healthcost: 10,
         cooldown: 20000,
+        buff: {
+          type: 'haste',
+          value: 10,
+        }
     },
     17: {
         letter: "FW",

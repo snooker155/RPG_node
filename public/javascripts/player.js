@@ -195,13 +195,19 @@ Player = {
     },
 
     castSpell: function(){
+      if(!Player.comboSpell.onCooldown){
         Player.comboSpell.target = App.oppSocketId;
+        Player.comboSpell.player = App.mySocketId;
         Player.comboSpell.gameId = App.gameId;
         // console.log('cast combo spell');
         // console.log(Player.comboSpell);
         if(Player.comboSpell){
           IO.socket.emit('playerCastComboSpell', Player.comboSpell);
         }
+        Player.resetSpell();
+      }else{
+        console.log("This spell is on cooldown");
+      }
     },
 
     resetSpell: function(){
